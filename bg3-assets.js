@@ -463,7 +463,9 @@ window.BG3DiceAssets = (function() {
             box-shadow: inset 0 0 calc(var(--d-size) * 0.14) rgba(0,0,0,0.85), inset 0 calc(var(--d-size) * 0.02) calc(var(--d-size) * 0.03) rgba(0,0,0,0.6) !important;
             overflow: visible;
         }
-        .tm-trash-lid-body { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; perspective: calc(var(--d-size) * 4); }
+        
+        /* PERSPEKTİF KALDIRILDI: 3D kaymasını engellemek için */
+        .tm-trash-lid-body { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; }
 
         .tm-trash-lid-collar { position: absolute; width: calc(88% * var(--lid-width, 1)); height: calc(88% * var(--lid-height, 1)); border-radius: 10%; transform: translateZ(calc(var(--d-scale, 1) * var(--lid-depth, 1) * 3px)); background: linear-gradient(135deg, var(--trash-lid-wall-top, #454e48) 0%, var(--trash-lid-wall-bot, #181c19) 45%, var(--trash-lid-wall-top, #454e48) 55%, var(--trash-lid-wall-bot, #181c19) 100%); box-shadow: 0 calc(var(--d-size) * 0.02) calc(var(--d-size) * 0.03) rgba(0,0,0,0.55), inset 0 0 calc(var(--d-size) * 0.02) rgba(0,0,0,0.4); }
         .tm-trash-lid-cap { position: absolute; width: calc(70% * var(--lid-width, 1)); height: calc(70% * var(--lid-height, 1)); border-radius: 8%; transform: translateZ(calc(var(--d-scale, 1) * var(--lid-depth, 1) * 9px)); background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.42) 0%, transparent 42%), radial-gradient(circle at 72% 78%, rgba(0,0,0,0.30) 0%, transparent 55%), linear-gradient(160deg, var(--trash-lid-hi, #8c988f) 0%, var(--trash-lid-mid, #56615a) 55%, var(--trash-lid-low, #313832) 100%); box-shadow: 0 0 0 calc(var(--d-size) * 0.012) var(--trash-lid-rim), 0 calc(var(--d-size) * 0.05) calc(var(--d-size) * 0.09) rgba(0,0,0,0.6), inset 0 calc(var(--d-size) * 0.04) calc(var(--d-size) * 0.05) rgba(255,255,255,0.25), inset 0 calc(var(--d-size) * -0.05) calc(var(--d-size) * 0.06) rgba(0,0,0,0.5); }
@@ -500,10 +502,18 @@ window.BG3DiceAssets = (function() {
             pointer-events: none;
         }
 
+        /* 3D EKSENİNİ BOZAN FILTER KALDIRILDI */
         .tm-type-d6-trashcan > .tm-face-glow.face-d6 {
             border-color: var(--trash-glow) !important;
             box-shadow: 0 0 calc(var(--d-size) * 0.18) calc(var(--glow-int, 65) * 0.05px) var(--trash-glow), inset 0 0 calc(var(--d-size) * 0.14) rgba(140,220,150,0.28) !important;
-            filter: brightness(1.12);
+        }
+        
+        /* PARLAMA (BRIGHTNESS) SADECE DÜZ YÜZEYLERE İŞLENDİ */
+        .tm-type-d6-trashcan > .tm-face-glow.face-d6 .tm-lid-top,
+        .tm-type-d6-trashcan > .tm-face-glow.face-d6 .tm-lid-side,
+        .tm-type-d6-trashcan > .tm-face-glow.face-d6 .tm-body-fill-layer {
+            filter: brightness(1.25);
+            transition: filter 0.3s;
         }
         `;
     }
