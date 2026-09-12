@@ -3,7 +3,7 @@ window.BG3DiceAssets = (function() {
     function getCSS() {
         return `
         #tm-drag-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999990; display: none; cursor: grabbing; }
-        #tm-ground-line { position: fixed; left: 0; width: 100vw; height: 2px; background: rgba(209, 48, 23, 0.6); box-shadow: 0 0 10px #d13017; display: none; z-index: 999991; pointer-events: none; transition: top 0.1s; }
+        #tm-ground-line { position: fixed; left: 0; width: 100vw; height: 2px; background: #00e676; box-shadow: 0 0 12px #00e676; display: none; z-index: 999991; pointer-events: none; transition: top 0.1s; }
 
         #tm-dice-scene {
             position: fixed; width: var(--d-size, 50px); height: var(--d-size, 50px);
@@ -24,11 +24,11 @@ window.BG3DiceAssets = (function() {
         .tm-dice-face {
             position: absolute;
             box-sizing: border-box;
-            font-family: 'Georgia', serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-weight: bold;
             backface-visibility: hidden;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
             overflow: visible;
             background-size: cover;
             background-position: center;
@@ -44,7 +44,6 @@ window.BG3DiceAssets = (function() {
             z-index: 1;
             background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
             transform-style: preserve-3d;
-            transition: background 0.3s;
         }
 
         .tm-inner-mass {
@@ -96,10 +95,6 @@ window.BG3DiceAssets = (function() {
                 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)),
                 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)),
                 inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
-        }
-        
-        .tm-face-glow:not(.face-d6) {
-            filter: brightness(calc(1 + (var(--glow-alpha) * 0.4)));
         }
 
         .tm-pips-container {
@@ -204,69 +199,256 @@ window.BG3DiceAssets = (function() {
         .tm-face-glow .tm-corner-plate .plate-fill { fill: var(--ring-color, #8a5a3a) !important; }
         .tm-face-glow .tm-skull-icon svg .skull-fill { fill: #ffffff !important; }
 
+        /* ================= YENİ MODERN PANEL (SİYAH - BEYAZ - YEŞİL) ================= */
         #tm-dice-menu {
-            position: fixed; background: rgba(17, 10, 8, 0.95); backdrop-filter: blur(8px); border: 2px solid #855c34;
-            border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); display: none; flex-direction: column; width: 280px;
-            pointer-events: auto; z-index: 999995; overflow: visible;
+            position: fixed;
+            background: rgba(10, 14, 18, var(--panel-opac, 0.96));
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 230, 118, 0.12);
+            display: none;
+            flex-direction: column;
+            width: var(--panel-w, 310px);
+            pointer-events: auto;
+            z-index: 999995;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #f0f6fc;
+            box-sizing: border-box;
         }
 
-        #tm-menu-drag-handle {
-            position: absolute; top: 10px; left: -26px; width: 24px; height: 40px;
-            background: rgba(28, 17, 15, 0.95); color: #855c34; font-size: 14px;
-            text-align: center; cursor: move; border-bottom-left-radius: 6px; border-top-left-radius: 6px;
-            border: 2px solid #855c34; border-right: none;
-            user-select: none; display: flex; justify-content: center; align-items: center; z-index: 20;
-            backdrop-filter: blur(8px);
+        #tm-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: #161c23;
+            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+            cursor: move;
+            user-select: none;
         }
-        #tm-menu-drag-handle:hover { color: #d4b886; background: #2b1b18; }
 
-        .tm-menu-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; font-family: 'Georgia', serif; max-height: 80vh; overflow-y: auto; }
-        .tm-menu-body::-webkit-scrollbar { width: 4px; }
-        .tm-menu-body::-webkit-scrollbar-thumb { background: #855c34; border-radius: 2px; }
+        #tm-menu-drag-title {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #00e676;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        .tm-menu-section { display: flex; flex-direction: column; gap: 6px; }
+        #tm-menu-close-btn {
+            font-size: 14px;
+            font-weight: bold;
+            color: #8b949e;
+            cursor: pointer;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        #tm-menu-close-btn:hover {
+            color: #ffffff;
+            background: #e53935;
+        }
+
+        .tm-menu-body {
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        .tm-menu-body::-webkit-scrollbar { width: 5px; }
+        .tm-menu-body::-webkit-scrollbar-track { background: #0c1015; }
+        .tm-menu-body::-webkit-scrollbar-thumb { background: #00e676; border-radius: 4px; }
+
+        .tm-menu-section { display: flex; flex-direction: column; gap: 5px; }
+        .tm-sec-title {
+            color: #8b949e;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
         .tm-menu-btn {
-            flex: 1; background: linear-gradient(to bottom, #2b1b18, #1c110f); border: 1px solid #a88b5e; color: #fce2a6; padding: 6px;
-            cursor: pointer; font-weight: bold; font-size: 12px; border-radius: 4px; text-align: center; transition: all 0.2s;
-            display: flex; justify-content: center; align-items: center;
+            background: #161c23;
+            border: 1px solid #30363d;
+            color: #f0f6fc;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 11px;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.18s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
         }
-        .tm-menu-btn:hover { background: #422b26; color: #fff; }
+        .tm-menu-btn:hover {
+            background: #1f2937;
+            border-color: #00e676;
+            color: #00e676;
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.2);
+        }
 
-        .tm-select { width: 100%; background: #1c110f; color: #fce2a6; border: 1px solid #a88b5e; padding: 6px; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: bold; outline: none; cursor: pointer; box-sizing: border-box; }
-        .tm-select:hover { border-color: #d4b886; }
-        .tm-select option { font-weight: bold; }
+        .tm-select {
+            width: 100%;
+            background: #161c23;
+            color: #f0f6fc;
+            border: 1px solid #30363d;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .tm-select:hover, .tm-select:focus {
+            border-color: #00e676;
+        }
+        .tm-select optgroup {
+            font-style: italic;
+            font-weight: 600;
+            color: #00e676;
+            background: #0d1117;
+        }
+        .tm-select optgroup option {
+            font-style: normal;
+            color: #f0f6fc;
+            background: #161c23;
+        }
 
-        .tm-select optgroup { font-style: italic; font-weight: normal; color: #a88b5e; background: #150c0a; }
-        .tm-select optgroup option { font-style: normal; color: #fce2a6; }
+        .tm-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #21262d;
+            outline: none;
+            border-radius: 2px;
+            margin: 0;
+        }
+        .tm-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e676;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.6);
+            transition: transform 0.1s, background 0.1s;
+        }
+        .tm-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #ffffff;
+        }
 
-        .tm-slider { -webkit-appearance: none; width: 100%; height: 5px; background: #2b1b18; outline: none; border: 1px solid #4a3227; border-radius: 3px; margin: 0; }
-        .tm-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #a88b5e; cursor: pointer; box-shadow: 0 0 4px rgba(0,0,0,0.8); transition: background 0.1s; }
-        .tm-slider::-webkit-slider-thumb:hover { background: #fce2a6; }
+        .tm-val-label {
+            color: #00e676;
+            font-size: 10px;
+            min-width: 32px;
+            text-align: right;
+            font-weight: 800;
+            display: inline-block;
+            background: #161c23;
+            padding: 2px 5px;
+            border-radius: 4px;
+            border: 1px solid #30363d;
+        }
 
-        .tm-val-label { color: #fce2a6; font-size: 10px; width: 28px; text-align: right; font-weight: bold; display: inline-block; background: #2b1b18; padding: 2px 4px; border-radius: 3px; border: 1px solid #4a3227; }
+        #tm-save-btn {
+            background: #00e676;
+            border-color: #00e676;
+            color: #0c1015;
+            font-weight: 800;
+        }
+        #tm-save-btn:hover {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 14px rgba(0, 230, 118, 0.5);
+        }
 
-        #tm-save-btn { background: #1f3b23; border-color: #3b7a46; color: #a8e0b3; }
-        #tm-save-btn:hover { background: #2c5432; }
-
-        #tm-presets-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; margin-top: 2px; justify-content: center; }
-        .tm-preset-item { display: flex; align-items: center; background: #1c110f; border: 1px solid #a88b5e; border-radius: 4px; color: #fce2a6; width: 30px; height: 30px; position: relative; }
-        .tm-preset-name { cursor: pointer; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; }
-        .tm-preset-name:hover { color: #fff; background: #422b26; border-radius: 4px; }
-        .tm-preset-del { position: absolute; top: -5px; right: -5px; background: #d13017; color: #fff; font-size: 9px; font-weight: bold; width: 12px; height: 12px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; border: 1px solid #1a100d; box-shadow: 0 0 3px rgba(0,0,0,0.5); }
-        .tm-preset-del:hover { background: #ff5555; }
+        #tm-presets-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        .tm-preset-item {
+            display: flex;
+            align-items: center;
+            background: #161c23;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #f0f6fc;
+            width: 32px;
+            height: 32px;
+            position: relative;
+        }
+        .tm-preset-name {
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .tm-preset-name:hover {
+            color: #00e676;
+            background: #21262d;
+            border-radius: 6px;
+        }
+        .tm-preset-del {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #e53935;
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            width: 13px;
+            height: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid #0d1117;
+        }
 
         #tm-custom-dialog {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 10, 8, 0.95); backdrop-filter: blur(4px);
-            display: none; flex-direction: column; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; text-align: center; z-index: 30; border-radius: 8px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 14, 18, 0.96); backdrop-filter: blur(8px);
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            padding: 20px; box-sizing: border-box; text-align: center; z-index: 50; border-radius: 12px;
         }
-        #tm-dialog-msg { color: #fce2a6; font-size: 13px; font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
-        #tm-dialog-ok, #tm-dialog-cancel { width: 90%; padding: 6px; margin-bottom: 6px; border-radius: 4px; cursor: pointer; font-weight: bold; border: 1px solid; font-size: 12px; }
-        #tm-dialog-ok { background: #1f3b23; border-color: #3b7a46; color: #a8e0b3; }
-        #tm-dialog-ok:hover { background: #2c5432; }
-        #tm-dialog-cancel { background: #3a110e; border-color: #8a2a22; color: #fca49d; }
-        #tm-dialog-cancel:hover { background: #521814; }
+        #tm-dialog-msg { color: #f0f6fc; font-size: 12px; font-weight: 700; margin-bottom: 14px; line-height: 1.5; }
+        #tm-dialog-ok, #tm-dialog-cancel {
+            width: 100%; padding: 8px; margin-bottom: 6px; border-radius: 6px; cursor: pointer; font-weight: 800; border: 1px solid; font-size: 11px;
+        }
+        #tm-dialog-ok { background: #00e676; border-color: #00e676; color: #0c1015; }
+        #tm-dialog-cancel { background: #21262d; border-color: #30363d; color: #f0f6fc; }
 
-        /* ================= TEMA RENK PALETLERI ================= */
+        /* ================= TEMA RENK PALETLERİ ================= */
         .tm-theme-obsidian {
             --body-fill: linear-gradient(150deg, #3a3632 0%, #16130f 100%);
             --plate-fill-solid: #4a4038;
@@ -336,62 +518,8 @@ window.BG3DiceAssets = (function() {
             --pip-hi: #effffd; --pip-mid: #5ff8ec; --pip-dark: #07545d; --pip-glow: rgba(95,248,236,0.78);
             --aether-pip-hi: #effffd; --aether-pip-mid: #98fff7; --aether-pip-core: #36ddcf; --aether-pip-dark: #0a6068;
         }
-        .tm-type-d6-aetherglass.tm-theme-lava {
-            --ring-color: #ff9a3d; --ring-glow: rgba(255,120,40,0.74); --ring-glow-soft: rgba(255,80,20,0.34);
-            --num-color: #ffe0b0; --num-glow: rgba(255,140,50,0.95); --num-glow-soft: rgba(255,70,20,0.50);
-            --pip-hi: #fff2d0; --pip-mid: #ff8a30; --pip-dark: #7a2404; --pip-glow: rgba(255,140,50,0.75);
-            --aether-pip-hi: #fff2d0; --aether-pip-mid: #ffb45c; --aether-pip-core: #ff6a21; --aether-pip-dark: #7a2404;
-        }
-        .tm-type-d6-aetherglass.tm-theme-blood {
-            --ring-color: #d83a2a; --ring-glow: rgba(255,50,40,0.72); --ring-glow-soft: rgba(180,20,20,0.34);
-            --num-color: #ffbbb3; --num-glow: rgba(255,50,40,0.95); --num-glow-soft: rgba(180,20,20,0.52);
-            --pip-hi: #ffe0dc; --pip-mid: #ff4b3d; --pip-dark: #6b0804; --pip-glow: rgba(255,50,40,0.72);
-            --aether-pip-hi: #ffe0dc; --aether-pip-mid: #ff8a80; --aether-pip-core: #e9251b; --aether-pip-dark: #6b0804;
-        }
-        .tm-type-d6-aetherglass.tm-theme-void {
-            --ring-color: #9d4edd; --ring-glow: rgba(180,90,240,0.72); --ring-glow-soft: rgba(120,40,190,0.34);
-            --num-color: #e0b8ff; --num-glow: rgba(180,90,240,0.96); --num-glow-soft: rgba(120,40,190,0.52);
-            --pip-hi: #f0d8ff; --pip-mid: #a855f7; --pip-dark: #3a1058; --pip-glow: rgba(180,90,240,0.70);
-            --aether-pip-hi: #f0d8ff; --aether-pip-mid: #c084fc; --aether-pip-core: #8b3ddb; --aether-pip-dark: #3a1058;
-        }
-        .tm-type-d6-aetherglass.tm-theme-toxic {
-            --ring-color: #39ff14; --ring-glow: rgba(70,255,30,0.72); --ring-glow-soft: rgba(40,200,10,0.34);
-            --num-color: #baffa8; --num-glow: rgba(70,255,30,0.95); --num-glow-soft: rgba(40,200,10,0.52);
-            --pip-hi: #ddffcf; --pip-mid: #5cff2e; --pip-dark: #124a08; --pip-glow: rgba(70,255,30,0.70);
-            --aether-pip-hi: #ddffcf; --aether-pip-mid: #9cff80; --aether-pip-core: #45e91f; --aether-pip-dark: #124a08;
-        }
-        .tm-type-d6-aetherglass.tm-theme-celestial {
-            --ring-color: #fff6db; --ring-glow: rgba(255,240,180,0.86); --ring-glow-soft: rgba(255,220,140,0.48);
-            --num-color: #fff8df; --num-glow: rgba(255,245,200,0.98); --num-glow-soft: rgba(255,220,140,0.58);
-            --pip-hi: #ffffff; --pip-mid: #ffe9a8; --pip-dark: #b8934a; --pip-glow: rgba(255,240,180,0.80);
-            --aether-pip-hi: #ffffff; --aether-pip-mid: #fff0ba; --aether-pip-core: #e6c463; --aether-pip-dark: #8f6f2a;
-        }
 
-        .tm-type-d6-aetherglass .face-d6 {
-            clip-path: polygon(12% 0%, 88% 0%, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0% 88%, 0% 12%);
-            border-color: rgba(214,146,74,0.82);
-            box-shadow:
-                0 0 calc(var(--d-size) * 0.16) rgba(95,248,236,0.34),
-                inset 0 0 calc(var(--d-size) * 0.18) rgba(0,0,0,0.74),
-                inset 0 0 calc(var(--d-size) * 0.06) rgba(95,248,236,0.28);
-        }
-        .tm-type-d6-aetherglass .tm-body-fill-layer {
-            clip-path: polygon(12% 0%, 88% 0%, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0% 88%, 0% 12%);
-            border-radius: 0;
-        }
-        .tm-type-d6-aetherglass .tm-body-fill-layer::before {
-            content: ""; position: absolute; inset: 8%; clip-path: inherit;
-            border: calc(var(--d-size) * 0.014) solid rgba(95,248,236,0.28);
-            box-shadow: inset 0 0 calc(var(--d-size) * 0.08) rgba(95,248,236,0.18);
-        }
-        .tm-type-d6-aetherglass .tm-body-fill-layer::after {
-            content: ""; position: absolute; inset: 0;
-            background: linear-gradient(115deg, transparent 0 22%, rgba(255,255,255,0.10) 25%, transparent 33%), repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 12px);
-            opacity: 0.72; mix-blend-mode: screen;
-        }
-        .tm-type-d6-aetherglass .tm-face-ring.tm-ring-aetherglass { width: 82%; height: 82%; }
-
-        /* ================= Kova Tasarımı (SADECE ANA ZAR İÇİN DEĞİŞKENLERİ EZER) ================= */
+        /* ================= KOVA TASARIMI ================= */
         .tm-type-d6-trashcan > .tm-dice-face,
         .tm-type-d6-trashcan > .tm-trash-inner-wall {
             --trash-body: linear-gradient(100deg, #565f5a 0%, #3c433f 38%, #2a302c 72%, #1c211e 100%);
@@ -405,7 +533,6 @@ window.BG3DiceAssets = (function() {
         .tm-type-d6-trashcan {
             --trash-body-rust: radial-gradient(circle at 22% 78%, rgba(150,88,42,0.35), transparent 40%), radial-gradient(circle at 82% 20%, rgba(120,70,35,0.22), transparent 36%);
             --trash-edge-dark: #23281f;
-            --trash-lid: linear-gradient(155deg, #7c8880 0%, #545e57 45%, #363e38 100%);
             --trash-lid-rim: #a3aea5;
             --trash-lid-hi: #9aa89f;
             --trash-lid-mid: #566056;
@@ -413,12 +540,9 @@ window.BG3DiceAssets = (function() {
             --trash-lid-wall-top: #454e48;
             --trash-lid-wall-bot: #181c19;
             --trash-lid-socket: #10130f;
-            --trash-paper-hi: #d8d2c2;
-            --trash-paper-mid: #a8a091;
-            --trash-paper-low: #6e6858;
             --trash-rivet: #8a958c;
             --trash-rivet-dark: #363e38;
-            --trash-glow: rgba(140,220,150,0.55);
+            --trash-glow: rgba(0, 230, 118, 0.65);
         }
 
         .tm-type-d6-trashcan > .face-d6 {
@@ -428,16 +552,6 @@ window.BG3DiceAssets = (function() {
         }
         .tm-type-d6-trashcan > .face-d6 .tm-body-fill-layer {
             border-radius: 8%; background: var(--trash-body-rust), var(--body-fill);
-        }
-        .tm-type-d6-trashcan > .face-d6 .tm-body-fill-layer::before {
-            content: ""; position: absolute; inset: 0; border-radius: inherit;
-            background: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) calc(var(--d-size) * 0.02), transparent calc(var(--d-size) * 0.02), transparent calc(var(--d-size) * 0.12), rgba(0,0,0,0.18) calc(var(--d-size) * 0.12), rgba(0,0,0,0.18) calc(var(--d-size) * 0.14), transparent calc(var(--d-size) * 0.14), transparent calc(var(--d-size) * 0.24));
-            opacity: 0.85;
-        }
-        .tm-type-d6-trashcan > .face-d6 .tm-body-fill-layer::after {
-            content: ""; position: absolute; inset: 0; border-radius: inherit;
-            background: linear-gradient(115deg, rgba(255,255,255,0.08) 0 12%, transparent 20%);
-            mix-blend-mode: screen; opacity: 0.6;
         }
 
         .tm-trash-rivet {
@@ -464,21 +578,19 @@ window.BG3DiceAssets = (function() {
 
         .tm-type-d6-trashcan .face-d6.tm-trash-lid-face {
             background: var(--trash-lid-socket, #141815); border-color: var(--trash-edge-dark) !important;
-            box-shadow: inset 0 0 calc(var(--d-size) * 0.14) rgba(0,0,0,0.85), inset 0 calc(var(--d-size) * 0.02) calc(var(--d-size) * 0.03) rgba(0,0,0,0.6) !important;
+            box-shadow: inset 0 0 calc(var(--d-size) * 0.14) rgba(0,0,0,0.85) !important;
             overflow: visible;
         }
         
-        /* PERSPEKTİF KALDIRILDI: 3D kaymasını engellemek için */
         .tm-trash-lid-body { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; }
 
-        /* YENI MATEMATIK İLE TAM OTURAN DUVARLAR */
         .tm-trash-lid-tier { position: absolute; left: 50%; top: 50%; display: block; transform-style: preserve-3d; transform-origin: center; pointer-events: none; background: none; box-shadow: none; }
         .tm-trash-lid-collar { width: var(--lid-collar-w); height: var(--lid-collar-h); --tier-depth: var(--lid-collar-thickness); --tier-half: var(--lid-collar-half); transform: translate(-50%, -50%) translateZ(var(--lid-collar-z)); }
         .tm-trash-lid-cap { width: var(--lid-cap-w); height: var(--lid-cap-h); --tier-depth: var(--lid-cap-thickness); --tier-half: var(--lid-cap-half); transform: translate(-50%, -50%) translateZ(var(--lid-cap-z)); }
         .tm-trash-lid-knob { width: var(--lid-knob-w); height: var(--lid-knob-h); --tier-depth: var(--lid-knob-thickness); --tier-half: var(--lid-knob-half); transform: translate(-50%, -50%) translateZ(var(--lid-knob-z)) rotateZ(45deg); }
 
-        .tm-lid-top, .tm-lid-side { position: absolute; display: block; box-sizing: border-box; backface-visibility: hidden; transition: background 0.3s; }
-        .tm-lid-top { inset: 0; transform: translateZ(var(--tier-half)); border: 1px solid rgba(182,198,185,0.48); box-shadow: inset 0 calc(var(--d-size) * 0.035) calc(var(--d-size) * 0.05) rgba(255,255,255,0.22), inset 0 calc(var(--d-size) * -0.05) calc(var(--d-size) * 0.07) rgba(0,0,0,0.58); }
+        .tm-lid-top, .tm-lid-side { position: absolute; display: block; box-sizing: border-box; backface-visibility: hidden; }
+        .tm-lid-top { inset: 0; transform: translateZ(var(--tier-half)); border: 1px solid rgba(182,198,185,0.48); }
         .tm-lid-side { background: linear-gradient(180deg, var(--trash-lid-wall-top, #555f58), var(--trash-lid-wall-bot, #171c18)); border: 1px solid rgba(0,0,0,0.52); }
         
         .tm-lid-side-front, .tm-lid-side-back { left: 0; width: 100%; height: var(--tier-depth); }
@@ -489,14 +601,13 @@ window.BG3DiceAssets = (function() {
         .tm-lid-side-left { right: 100%; left: auto; transform-origin: right; transform: translateZ(var(--tier-half)) rotateY(-90deg); }
         .tm-lid-side-right { left: 100%; right: auto; transform-origin: left; transform: translateZ(var(--tier-half)) rotateY(90deg); }
 
-        .tm-trash-lid-collar .tm-lid-top { border-radius: 8%; background: linear-gradient(145deg, #68746b, #2f3933 55%, #1a201c); box-shadow: 0 calc(var(--d-size) * 0.045) calc(var(--d-size) * 0.09) rgba(0,0,0,0.72), inset 0 0 calc(var(--d-size) * 0.03) rgba(0,0,0,0.48); }
-        .tm-trash-lid-cap .tm-lid-top { border-radius: 7%; background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.46) 0%, transparent 42%), radial-gradient(circle at 72% 78%, rgba(0,0,0,0.35) 0%, transparent 55%), linear-gradient(160deg, var(--trash-lid-hi, #8c988f) 0%, var(--trash-lid-mid, #56615a) 55%, var(--trash-lid-low, #313832) 100%); box-shadow: 0 0 0 calc(var(--d-size) * 0.014) var(--trash-lid-rim), 0 calc(var(--d-size) * 0.07) calc(var(--d-size) * 0.12) rgba(0,0,0,0.72), inset 0 0 calc(var(--d-size) * 0.04) rgba(255,255,255,0.16); }
-        .tm-trash-lid-knob .tm-lid-top { border-radius: 10%; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.6) 0%, transparent 45%), linear-gradient(160deg, #b0bbb2, var(--trash-lid-low, #262b26)); box-shadow: 0 calc(var(--d-size) * 0.035) calc(var(--d-size) * 0.055) rgba(0,0,0,0.76), inset 0 0 calc(var(--d-size) * 0.025) rgba(255,255,255,0.24); }
+        .tm-trash-lid-collar .tm-lid-top { border-radius: 8%; background: linear-gradient(145deg, #68746b, #2f3933 55%, #1a201c); }
+        .tm-trash-lid-cap .tm-lid-top { border-radius: 7%; background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.46) 0%, transparent 42%), linear-gradient(160deg, var(--trash-lid-hi, #8c988f) 0%, var(--trash-lid-mid, #56615a) 55%, var(--trash-lid-low, #313832) 100%); }
+        .tm-trash-lid-knob .tm-lid-top { border-radius: 10%; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.6) 0%, transparent 45%), linear-gradient(160deg, #b0bbb2, var(--trash-lid-low, #262b26)); }
 
         .tm-trash-inner-wall { position: absolute; width: var(--d-size); height: var(--d-size); box-sizing: border-box; backface-visibility: hidden; }
         .tm-trash-inner-wall .tm-body-fill-layer { border-radius: 6%; }
 
-        /* --- KÜÇÜK ZARLAR İÇİN DİNAMİK SARICI CSS --- */
         .tm-mini-dice-wrap {
             position: absolute;
             width: var(--d-size); height: var(--d-size);
@@ -505,7 +616,6 @@ window.BG3DiceAssets = (function() {
             pointer-events: none;
         }
 
-        /* 3D EKSENİNİ BOZAN FILTER KALDIRILDI VE PARLAMA RENGİ DEĞİŞKENE EKLENDİ */
         .tm-type-d6-trashcan > .tm-face-glow.face-d6 {
             --trash-lid-hi: #cce0d2;
             --trash-lid-mid: #8a968a;
@@ -513,207 +623,229 @@ window.BG3DiceAssets = (function() {
             --trash-lid-wall-top: #738278;
             --trash-lid-wall-bot: #3a443b;
             border-color: var(--trash-glow) !important;
-            box-shadow: 0 0 calc(var(--d-size) * 0.18) calc(var(--glow-int, 65) * 0.05px) var(--trash-glow), inset 0 0 calc(var(--d-size) * 0.14) rgba(140,220,150,0.28) !important;
+            box-shadow: 0 0 calc(var(--d-size) * 0.18) calc(var(--glow-int, 65) * 0.05px) var(--trash-glow) !important;
         }
         `;
     }
 
     function getMenuHTML() {
         return `
-        <div id="tm-menu-drag-handle" title="Sürüklemek İçin Tutun">⠿</div>
+        <div id="tm-menu-header">
+            <span id="tm-menu-drag-title">⚡ BG3 DICE CONTROL</span>
+            <span id="tm-menu-close-btn" title="Kapat">✕</span>
+        </div>
 
         <div class="tm-menu-body">
 
             <div class="tm-menu-section">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 2px;">ZAR TURU</div>
-                <select class="tm-select" id="tm-shape-select" style="width: 100%;">
-                    <option value="D6">D6 - Kup Zar</option>
+                <span class="tm-sec-title">Zar Türü</span>
+                <select class="tm-select" id="tm-shape-select">
+                    <option value="D6">D6 - Küp Zar</option>
                     <option value="D4">D4 - Piramit Zar</option>
                     <option value="D20">D20 - Kritik Zar</option>
                 </select>
             </div>
 
             <div class="tm-menu-section">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 2px;">YUZ STILI</div>
-                <select class="tm-select" id="tm-face-style-select" style="width: 100%;">
+                <span class="tm-sec-title">Yüz Stili</span>
+                <select class="tm-select" id="tm-face-style-select">
                     <option value="skull">Kurukafa Nokta</option>
                 </select>
             </div>
 
-            <div class="tm-menu-section" style="margin-top: 4px;">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 2px;">ZAR BOYUTU</div>
+            <div class="tm-menu-section">
+                <span class="tm-sec-title">Zar Boyutu</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;">Büyüklük</span>
                     <input type="range" class="tm-slider" id="tm-size-slider" min="20" max="150" value="50" step="1" style="flex: 1;">
-                    <span id="tm-size-val" class="tm-val-label" style="background:transparent; border:none;">50px</span>
+                    <span id="tm-size-val" class="tm-val-label">50px</span>
                 </div>
             </div>
 
-            <div class="tm-menu-section tm-skel-settings" style="margin-top: 4px; padding: 4px; border: 1px solid #4a3227; background: #150c0a; border-radius: 4px;">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 4px; text-align:center;">GÖRSEL DETAY AYARLARI</div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Noktaların Büyüklüğü">Pip Boyut</span>
+            <div class="tm-menu-section tm-skel-settings" style="padding: 8px; border: 1px solid #30363d; background: #12171e; border-radius: 8px;">
+                <span class="tm-sec-title" style="text-align:center; display:block; color:#00e676;">Görsel Detay Ayarları</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Pip Boyut</span>
                     <input type="range" class="tm-slider" id="tm-pip-scale-slider" min="50" max="350" value="220" step="5" style="flex: 1;">
                     <span id="tm-pip-scale-val" class="tm-val-label">220</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Merkezden Kenarlara Uzaklık">Yayılım</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Yayılım</span>
                     <input type="range" class="tm-slider" id="tm-pip-spread-slider" min="40" max="100" value="90" step="1" style="flex: 1;">
                     <span id="tm-pip-spread-val" class="tm-val-label">90</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Köşe zırhlarının içeri/dışarı mesafesi (0 merkeze kilitler)">Zırh Yeri</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Zırh Yeri</span>
                     <input type="range" class="tm-slider" id="tm-plate-offset-slider" min="-15" max="25" value="0" step="1" style="flex: 1;">
                     <span id="tm-plate-offset-val" class="tm-val-label">0</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Köşe zırhlarının 3D derinliği (İleri/Geri)">Zırh Derin</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Zırh Derin</span>
                     <input type="range" class="tm-slider" id="tm-plate-depth-slider" min="-20" max="50" value="1" step="1" style="flex: 1;">
                     <span id="tm-plate-depth-val" class="tm-val-label">1</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Köşe zırhlarını bu yüz stili için tamamen aç/kapat">Zırhlar</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Zırhlar</span>
                     <div class="tm-menu-btn" id="tm-plates-toggle-btn" style="flex: 1; padding: 4px;">Açık</div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-slot-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Yarık deliklerin büyüklüğü">Yarık Boy</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Yarık Boy</span>
                     <input type="range" class="tm-slider" id="tm-slot-scale-slider" min="50" max="350" value="220" step="5" style="flex: 1;">
                     <span id="tm-slot-scale-val" class="tm-val-label">220</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-slot-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Yarık deliklerin merkezden yayılımı">Yarık Yayılım</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Yarık Yay</span>
                     <input type="range" class="tm-slider" id="tm-slot-spread-slider" min="40" max="100" value="90" step="1" style="flex: 1;">
                     <span id="tm-slot-spread-val" class="tm-val-label">90</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;" class="tm-lid-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Kapağın genişliği (sadece kapak, gövdeyi etkilemez)">Kapak Gen</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Kapak Gen</span>
                     <input type="range" class="tm-slider" id="tm-lid-width-slider" min="40" max="200" value="100" step="5" style="flex: 1;">
                     <span id="tm-lid-width-val" class="tm-val-label">100</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-lid-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Kapağın yüksekliği (sadece kapak, gövdeyi etkilemez)">Kapak Yük</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Kapak Yük</span>
                     <input type="range" class="tm-slider" id="tm-lid-height-slider" min="40" max="200" value="100" step="5" style="flex: 1;">
                     <span id="tm-lid-height-val" class="tm-val-label">100</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-lid-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Kapağın kalınlığı / öne çıkma derinliği (sadece kapak, gövdeyi etkilemez)">Kapak Kalın</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Kapak Kalın</span>
                     <input type="range" class="tm-slider" id="tm-lid-depth-slider" min="0" max="250" value="100" step="5" style="flex: 1;">
                     <span id="tm-lid-depth-val" class="tm-val-label">100</span>
                 </div>
-                <div class="tm-mini-dice-row" style="margin: 8px 0 3px; padding-top: 5px; border-top: 1px solid rgba(168,139,94,0.28); color: #a88b5e; font-size: 9px; font-weight: bold; text-align:center;">KOVA İÇİ ZAR FİZİĞİ</div>
-
-                <!-- KUCUK ZAR EKLEME MENUSU -->
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Kova içine yeni bir zar atın">Zar Ekle</span>
-                    <select class="tm-select" id="tm-mini-dice-add-select" style="flex: 1; padding: 4px;">
-                        <optgroup label="D6 - Küp Zar">
-                            <option value="D6_dots">Düz Nokta</option>
-                            <option value="D6_numbers">Sayı</option>
-                            <option value="D6_skull">Kurukafa Nokta</option>
-                            <option value="D6_aetherglass">Aetherglass Rune</option>
-                        </optgroup>
-                        <optgroup label="D4 - Piramit Zar">
-                            <option value="D4_numbers">Sayı</option>
-                            <option value="D4_dots">Düz Nokta</option>
-                            <option value="D4_skull">Kurukafa İşaret</option>
-                        </optgroup>
-                        <optgroup label="D20 - Kritik Zar">
-                            <option value="D20_numbers">Sayı</option>
-                            <option value="D20_dots">Düz Nokta</option>
-                            <option value="D20_skull">Kurukafa İşaret</option>
-                        </optgroup>
-                    </select>
-                    <div class="tm-menu-btn" id="tm-mini-dice-add-btn" style="flex: 0 0 30px; padding: 4px;" title="Seçilen zarı sepete ekle">+</div>
-                </div>
-
-                <div id="tm-mini-dice-list" class="tm-mini-dice-row" style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding: 4px; background: #1a100d; border: 1px inset #4a3227; border-radius: 4px; min-height: 24px;">
-                    <!-- Eklenen zarlar buraya gelecek -->
-                </div>
-                <!-- ============================= -->
-
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Kova içindeki küçük zarların boyutu (% olarak)">İç Zar Boyutu</span>
-                    <input type="range" class="tm-slider" id="tm-mini-dice-scale-slider" min="5" max="40" value="16" step="1" style="flex: 1;">
-                    <span id="tm-mini-dice-scale-val" class="tm-val-label">16</span>
-                </div>
-
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Kutu hareket ederken küçük zarların başlangıç ve çarpışma hızı">İç Zar Hız</span>
-                    <input type="range" class="tm-slider" id="tm-mini-dice-speed-slider" min="50" max="320" value="190" step="5" style="flex: 1;">
-                    <span id="tm-mini-dice-speed-val" class="tm-val-label">190</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="İç duvarlara ve diğer küçük zarlara çarptıktan sonra ne kadar sekeceği">İç Zar Sek</span>
-                    <input type="range" class="tm-slider" id="tm-mini-dice-bounce-slider" min="25" max="98" value="82" step="1" style="flex: 1;">
-                    <span id="tm-mini-dice-bounce-val" class="tm-val-label">82</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Yüksek değer küçük zarların daha çabuk sakinleşmesini sağlar">İç Zar Sön</span>
-                    <input type="range" class="tm-slider" id="tm-mini-dice-friction-slider" min="0" max="75" value="24" step="1" style="flex: 1;">
-                    <span id="tm-mini-dice-friction-val" class="tm-val-label">24</span>
-                </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;" class="tm-edge-shadow-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Delik kenarındaki kırık hattın gölge kalınlığı">Kenar Kalın</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Kenar Kalın</span>
                     <input type="range" class="tm-slider" id="tm-edge-width-slider" min="0" max="200" value="100" step="5" style="flex: 1;">
                     <span id="tm-edge-width-val" class="tm-val-label">100</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-edge-shadow-row">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Delik kenarındaki gölgenin bulanıklık miktarı (0 = tamamen net)">Kenar Bulanık</span>
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Kenar Bulanık</span>
                     <input type="range" class="tm-slider" id="tm-edge-blur-slider" min="0" max="100" value="30" step="5" style="flex: 1;">
                     <span id="tm-edge-blur-val" class="tm-val-label">30</span>
                 </div>
+
+                <!-- KOVA İÇİ ZAR AYARLARI -->
+                <div class="tm-mini-dice-row" style="margin: 10px 0 6px; padding-top: 6px; border-top: 1px solid #21262d; font-size: 10px; font-weight: 800; color: #00e676; text-align:center;">
+                    KOVA İÇİ ÖZEL ZARLAR
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 6px;" class="tm-mini-dice-row">
+                    <div style="display: flex; gap: 6px;">
+                        <select class="tm-select" id="tm-mini-dice-add-select" style="flex: 1.2;">
+                            <optgroup label="D6">
+                                <option value="D6_dots">D6 Düz Nokta</option>
+                                <option value="D6_numbers">D6 Sayı</option>
+                                <option value="D6_skull">D6 Kurukafa</option>
+                                <option value="D6_aetherglass">D6 Aether</option>
+                            </optgroup>
+                            <optgroup label="D4">
+                                <option value="D4_numbers">D4 Sayı</option>
+                                <option value="D4_dots">D4 Nokta</option>
+                                <option value="D4_skull">D4 Kurukafa</option>
+                            </optgroup>
+                            <optgroup label="D20">
+                                <option value="D20_numbers">D20 Sayı</option>
+                                <option value="D20_dots">D20 Nokta</option>
+                                <option value="D20_skull">D20 Kurukafa</option>
+                            </optgroup>
+                        </select>
+
+                        <select class="tm-select" id="tm-mini-dice-theme-select" style="flex: 1;">
+                            <option value="lava">🔥 Lav</option>
+                            <option value="bonelegend">🔶 Kadim</option>
+                            <option value="void">🟣 Hiçlik</option>
+                            <option value="obsidian">⚫ Obsidyen</option>
+                            <option value="toxic">☣️ Toksik</option>
+                            <option value="blood">🩸 Kan</option>
+                            <option value="celestial">✨ Işık</option>
+                        </select>
+
+                        <div class="tm-menu-btn" id="tm-mini-dice-add-btn" style="flex: 0 0 32px; background:#00e676; color:#0c1015; font-size:14px;" title="Kovaya Ekle">+</div>
+                    </div>
+
+                    <div id="tm-mini-dice-list" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; background: #0c1015; border: 1px solid #21262d; border-radius: 6px; min-height: 24px;"></div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;" class="tm-mini-dice-row">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">İç Zar Boy</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-scale-slider" min="5" max="40" value="16" step="1" style="flex: 1;">
+                    <span id="tm-mini-dice-scale-val" class="tm-val-label">16</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">İç Zar Hız</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-speed-slider" min="50" max="320" value="190" step="5" style="flex: 1;">
+                    <span id="tm-mini-dice-speed-val" class="tm-val-label">190</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">İç Zar Sek</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-bounce-slider" min="25" max="98" value="82" step="1" style="flex: 1;">
+                    <span id="tm-mini-dice-bounce-val" class="tm-val-label">82</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;" class="tm-mini-dice-row">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">İç Zar Sön</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-friction-slider" min="0" max="75" value="24" step="1" style="flex: 1;">
+                    <span id="tm-mini-dice-friction-val" class="tm-val-label">24</span>
+                </div>
             </div>
 
-            <div class="tm-menu-section tm-theme-section" style="margin-top: 4px;">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 2px;">RENK PALETI</div>
+            <div class="tm-menu-section tm-theme-section">
+                <span class="tm-sec-title">Renk Paleti (Ana Zar)</span>
                 <select class="tm-select" id="tm-theme-select">
-                    <option value="lava" style="color: #ffeb3b; background: #3a0000;">🔥 Reçine Lav</option>
-                    <option value="bonelegend" style="color: #ff6a3d; background: #241010;">🔶 Kadim Efsane</option>
-                    <option value="void" style="color: #e0b0ff; background: #1a0a28;">🟣 Hiçlik (Karanlık Mor)</option>
-                    <option value="obsidian" style="color: #f0d6a8; background: #2a2119;">⚫ Obsidyen</option>
-                    <option value="toxic" style="color: #baffa8; background: #0a1a08;">☣️ Toksik Asit</option>
-                    <option value="blood" style="color: #ffb0a8; background: #2a0806;">🩸 Kan Büyüsü</option>
-                    <option value="celestial" style="color: #fff; background: #c9b06a;">✨ Kutsal Işık</option>
+                    <option value="lava">🔥 Reçine Lav</option>
+                    <option value="bonelegend">🔶 Kadim Efsane</option>
+                    <option value="void">🟣 Hiçlik (Karanlık Mor)</option>
+                    <option value="obsidian">⚫ Obsidyen</option>
+                    <option value="toxic">☣️ Toksik Asit</option>
+                    <option value="blood">🩸 Kan Büyüsü</option>
+                    <option value="celestial">✨ Kutsal Işık</option>
                 </select>
             </div>
 
-            <div class="tm-menu-section" style="margin-top: 4px; padding: 4px; border: 1px solid #4a3227; background: #150c0a; border-radius: 4px;">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 4px; text-align:center;">SONUÇ PARLAMASI (GLOW)</div>
+            <div class="tm-menu-section" style="padding: 6px; border: 1px solid #30363d; background: #12171e; border-radius: 6px;">
+                <span class="tm-sec-title" style="text-align:center; display:block;">Glow Parlaması</span>
                 <select class="tm-select" id="tm-glow-target" style="margin-bottom: 4px;">
                     <option value="top">Tepedeki Yüzeyi Seç (FRP)</option>
                     <option value="front">Ekrana Bakan Yüzeyi Seç</option>
                 </select>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;">Glow Gücü</span>
                     <input type="range" class="tm-slider" id="tm-glow-slider" min="0" max="100" value="65" step="1" style="flex: 1;">
                     <span id="tm-glow-val" class="tm-val-label">65</span>
                 </div>
             </div>
 
-            <div class="tm-menu-section" style="margin-top: 4px;">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 2px;">ZEMİN AYARI</div>
+            <div class="tm-menu-section">
+                <span class="tm-sec-title">Zemin Limiti</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;">Limit Yeri</span>
-                    <input type="range" class="tm-slider" id="tm-ground-slider" min="10" max="100" value="100" step="1" title="Zarın düşeceği alt sınırı belirler" style="flex: 1;">
+                    <input type="range" class="tm-slider" id="tm-ground-slider" min="10" max="100" value="100" step="1" style="flex: 1;">
                     <span id="tm-ground-val" class="tm-val-label">%100</span>
                 </div>
             </div>
 
-            <div class="tm-menu-section" style="margin-top: 4px; padding: 4px; border: 1px solid #4a3227; background: #150c0a; border-radius: 4px;">
-                <div style="color: #a88b5e; font-size: 10px; font-weight: bold; margin-bottom: 4px; text-align:center;">GÖRÜNÜRLÜK</div>
-                <div class="tm-menu-btn" id="tm-toggle-visibility-btn">👁️ Zarı Gizle</div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
-                    <span style="color: #a88b5e; font-size: 10px; width: 45px; text-align: right;" title="Zarı gizlemek/göstermek için kısayol">Kısayol</span>
-                    <div class="tm-select" id="tm-hotkey-display" style="flex: 1; text-align: center; cursor: pointer;" title="Değiştirmek için tıklayın, ardından yeni tuş kombinasyonuna basın">Alt+Shift+D</div>
+            <!-- PANELE ÖZEL AYARLAR -->
+            <div class="tm-menu-section" style="padding: 8px; border: 1px solid #30363d; background: #12171e; border-radius: 8px;">
+                <span class="tm-sec-title" style="text-align:center; display:block; color:#00e676;">Panel Ayarları</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Genişlik</span>
+                    <input type="range" class="tm-slider" id="tm-panel-width-slider" min="260" max="450" value="310" step="5" style="flex: 1;">
+                    <span id="tm-panel-width-val" class="tm-val-label">310px</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <span style="font-size: 10px; width: 55px; color:#8b949e;">Opaklık</span>
+                    <input type="range" class="tm-slider" id="tm-panel-opacity-slider" min="50" max="100" value="96" step="1" style="flex: 1;">
+                    <span id="tm-panel-opacity-val" class="tm-val-label">%96</span>
                 </div>
             </div>
 
-            <div class="tm-menu-section" style="margin-top: 4px;">
-                <div class="tm-menu-btn" id="tm-save-btn">💾 Hızlı Kaydet</div>
+            <div class="tm-menu-section">
+                <div class="tm-menu-btn" id="tm-toggle-visibility-btn">👁️ Zarı Gizle</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <span style="font-size: 10px; color:#8b949e; width: 45px;">Kısayol</span>
+                    <div class="tm-select" id="tm-hotkey-display" style="flex: 1; text-align: center; cursor: pointer;">Alt+Shift+D</div>
+                </div>
             </div>
 
             <div class="tm-menu-section">
-                <div id="tm-presets-list"></div>
+                <div class="tm-menu-btn" id="tm-save-btn">💾 Hızlı Kaydet</div>
+                <div id="tm-presets-list" style="margin-top: 4px;"></div>
             </div>
 
         </div>
@@ -841,7 +973,6 @@ window.BG3DiceAssets = (function() {
         return html;
     }
 
-    // Kullanılacak fonksiyonları dışa aktarıyoruz
     return {
         getCSS: getCSS,
         getMenuHTML: getMenuHTML,
