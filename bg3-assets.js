@@ -24,7 +24,7 @@ window.ImmortalDiceAssets = (function() {
         .tm-dice-face {
             position: absolute;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--dice-font, 'Georgia', serif);
             font-weight: bold;
             backface-visibility: hidden;
             transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
@@ -38,7 +38,7 @@ window.ImmortalDiceAssets = (function() {
 
         .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* ====== D20 ve D4 YÜZEY AYARLARI ====== */
+        /* ====== D20 ve D4 TERTEMİZ DÜZELTME ====== */
         .face-d4, .face-d20 {
             top: var(--tri-offset-y) !important;
             left: 0;
@@ -50,7 +50,7 @@ window.ImmortalDiceAssets = (function() {
                 inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
 
-        /* Tüm yüzeylerin içine yerleşen ana renk katmanı */
+        /* Tüm yüzeylerin içine yerleşen ana renk katmanı (Geri Döndü!) */
         .tm-body-fill-layer {
             position: absolute; inset: 0;
             overflow: hidden;
@@ -62,33 +62,29 @@ window.ImmortalDiceAssets = (function() {
         
         .face-d6 .tm-body-fill-layer { border-radius: 4%; }
         
-        /* D20 ve D4 için üçgen maskeleme (sadece dış hatları keser, içeriği değil) */
+        /* D20 ve D4 için saf kesme maskesi (Siyah üçgenler silindi!) */
         .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             border-radius: 0;
         }
 
-        /* Çizgiler artık ayrı bir SVG katmanında! */
+        /* YENİ: Kusursuz 3 Kenarlı SVG Çizgi Katmanı */
         .tm-tri-border-layer {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: 5; /* Yazının altında, rengin üstünde */
+            z-index: 5;
             pointer-events: none;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
-        
-        .tm-tri-border-layer svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* Çizginin rengini ve kalınlığını ayarladığımız yer */
+        .tm-tri-border-layer svg { width: 100%; height: 100%; display: block; overflow: visible; }
         .tm-tri-border-layer polygon {
             fill: none;
-            stroke: var(--d20-edge-color, var(--ring-color)); 
-            stroke-width: calc(var(--d20-edge-w, 8) * 0.5px); /* Menüden gelen değeri kullanır */
-            stroke-linejoin: round;
+            stroke: var(--d20-edge-color, #ff8a3d);
+            /* stroke dışa taştığı için kalınlığı iki kat veriyoruz, clip-path yarısını yiyor ve kusursuz iç kenarlık oluyor */
+            stroke-width: calc(var(--d20-edge-w, 4) * 2px); 
+            vector-effect: non-scaling-stroke;
+            stroke-linejoin: miter;
         }
 
         .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
@@ -133,7 +129,7 @@ window.ImmortalDiceAssets = (function() {
         .face-d6 .tm-face-ring { width: 78%; height: 78%; }
         .face-d6 .tm-face-ring.tm-ring-horned-skull { width: 130%; height: 130%; }
 
-        .tm-number-glow { font-family: 'Georgia', serif; font-weight: bold; font-size: calc(var(--d-size) * 0.5); line-height: 1; color: var(--num-color, #ffb27a); z-index: 10; pointer-events: none; }
+        .tm-number-glow { font-family: var(--dice-font, 'Georgia', serif); font-weight: bold; font-size: calc(var(--d-size) * 0.5); line-height: 1; color: var(--num-color, #ffb27a); z-index: 10; pointer-events: none; }
         .face-d4 .tm-number-glow, .face-d20 .tm-number-glow { font-size: calc(var(--d-size) * 0.36); }
 
         .tm-skull-icon { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; pointer-events: none; transform-style: preserve-3d; }
@@ -302,6 +298,16 @@ window.ImmortalDiceAssets = (function() {
         `;
     }
 
+    function getTriangleBorderSVG() {
+        return `
+        <div class="tm-tri-border-layer">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polygon points="50,0 0,100 100,100" />
+            </svg>
+        </div>
+        `;
+    }
+
     function getMenuHTML() {
         return `
         <!-- MODERN SOL ÜST İÇ TUTAMAÇ VE BAŞLIK BİR ARADA -->
@@ -352,6 +358,14 @@ window.ImmortalDiceAssets = (function() {
                     </select>
                 </div>
                 <div class="tm-menu-section">
+                    <span class="tm-sec-title">Yazı Tipi (Font)</span>
+                    <select class="tm-select" id="tm-font-select">
+                        <option value="Georgia, serif">Klasik Fantastik</option>
+                        <option value="'Trebuchet MS', sans-serif">Modern Net</option>
+                        <option value="'Courier New', monospace">Mekanik Retro</option>
+                    </select>
+                </div>
+                <div class="tm-menu-section">
                     <span class="tm-sec-title">Zar Boyutu</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <input type="range" class="tm-slider" id="tm-size-slider" min="20" max="150" value="50" step="1" style="flex: 1;">
@@ -367,8 +381,8 @@ window.ImmortalDiceAssets = (function() {
                 <div class="tm-tri-settings" style="display:none; flex-direction:column; gap:8px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 11px; width: 85px; color:#8b949e;">Çizgi Kalınlığı</span>
-                        <input type="range" class="tm-slider" id="tm-d20-width-slider" min="0" max="25" value="8" step="1" style="flex: 1;">
-                        <span id="tm-d20-width-val" class="tm-val-label">8</span>
+                        <input type="range" class="tm-slider" id="tm-d20-width-slider" min="0" max="20" value="4" step="1" style="flex: 1;">
+                        <span id="tm-d20-width-val" class="tm-val-label">4</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 11px; width: 85px; color:#8b949e;">Çizgi Rengi</span>
@@ -567,6 +581,16 @@ window.ImmortalDiceAssets = (function() {
         else if (dir === 'br') { points = "25,100 100,25 100,100"; edge = '<line x1="25" y1="100" x2="100" y2="25" class="plate-edge"/>'; }
         return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%; height:100%; display:block; overflow:visible;" xmlns="http://www.w3.org/2000/svg"><polygon points="${points}" class="plate-fill"/>${edge}</svg>`;
     }
+    
+    function getTriangleBorderSVG() {
+        return `
+        <div class="tm-tri-border-layer">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polygon points="50,0 0,100 100,100" />
+            </svg>
+        </div>
+        `;
+    }
 
     function seededRandom(seed) { let x = Math.sin(seed) * 10000; return x - Math.floor(x); }
 
@@ -623,6 +647,7 @@ window.ImmortalDiceAssets = (function() {
         getHornedSkullSVG: getHornedSkullSVG,
         getArtifactSVG: getArtifactSVG,
         getCornerPlateSVG: getCornerPlateSVG,
+        getTriangleBorderSVG: getTriangleBorderSVG,
         getJaggedHolePath: getJaggedHolePath,
         getCompactPipsHTML: getCompactPipsHTML
     };
