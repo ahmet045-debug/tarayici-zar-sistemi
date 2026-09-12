@@ -27,8 +27,7 @@ window.ImmortalDiceAssets = (function() {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-weight: bold;
             backface-visibility: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+            transition: box-shadow 0.3s, background 0.3s;
             overflow: visible;
             background-size: cover;
             background-position: center;
@@ -37,15 +36,40 @@ window.ImmortalDiceAssets = (function() {
             transform-style: preserve-3d;
         }
 
+        .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); transition: border-color 0.3s, box-shadow 0.3s; }
+
+        /* ====== D20 ve D4 İÇİN YEPYENİ KUSURSUZ ÇERÇEVE MATEMATİĞİ ====== */
+        .face-d4, .face-d20 {
+            top: var(--tri-offset-y) !important;
+            left: 0;
+            background: var(--d20-edge-color, var(--ring-color)) !important; /* Dış çerçeve rengi */
+            border: none !important; /* Eski bozuk sınır kaldırıldı */
+            box-shadow:
+                0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)),
+                0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)),
+                inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
+        }
+
         .tm-body-fill-layer {
             position: absolute; inset: 0;
-            border-radius: 4%;
             overflow: hidden;
             z-index: 1;
             background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
             transform-style: preserve-3d;
             transition: background 0.3s;
         }
+        
+        .face-d6 .tm-body-fill-layer { border-radius: 4%; }
+        
+        /* Üçgenin içini dolduran ve küçülerek çerçeve bırakan katman */
+        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transform-origin: 50% 66.6666%;
+            transform: scale(var(--d20-edge-w, 0.92)); /* Çizgi kalınlığını ayarlayan sihirli değer */
+        }
+
+        .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
+        .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
 
         .tm-inner-mass {
             position: absolute;
@@ -65,23 +89,9 @@ window.ImmortalDiceAssets = (function() {
         .face-d4 .tm-dice-content, .face-d20 .tm-dice-content { top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%); }
         .tm-dice-content.inverted { transform: translate(-50%, -50%) rotateZ(180deg) !important; }
 
-        .face-d6 { width: var(--d-size); height: var(--d-size); }
-
-        .face-d4, .face-d20 {
-            top: var(--tri-offset-y) !important;
-            left: 0;
-            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
-            border: calc(var(--d-size) * 0.045) solid var(--ring-color, #8a5a3a) !important;
-            box-shadow: 0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)), 0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)), inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
-        }
-
-        .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
-        .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
-
         .tm-face-glow { --glow-alpha: calc(var(--glow-int, 65) / 100); z-index: 100; }
 
         .tm-face-glow.face-d4, .tm-face-glow.face-d20 {
-            border-color: var(--ring-color, #8a5a3a) !important;
             box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
         }
         .tm-face-glow:not(.face-d6) { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
@@ -141,15 +151,12 @@ window.ImmortalDiceAssets = (function() {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #f0f6fc;
             box-sizing: border-box;
-            
-            /* Native Resize Ayarları */
             resize: horizontal;
             min-width: 280px;
             max-width: 550px;
-            overflow: hidden; /* Resize için şart */
+            overflow: hidden; 
         }
         
-        /* Şık Resize Handle (Tarayıcının çirkin tutamacını gizleyip kendimiz tasarlıyoruz) */
         #tm-dice-menu::-webkit-resizer {
             background-color: transparent;
             background-image: radial-gradient(circle at 100% 100%, #00e676 10%, transparent 20%);
@@ -195,6 +202,11 @@ window.ImmortalDiceAssets = (function() {
         .tm-slider { -webkit-appearance: none; width: 100%; height: 8px; background: #161c23; outline: none; border-radius: 4px; border: 1px solid #30363d; margin: 0; }
         .tm-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #00e676; cursor: pointer; box-shadow: 0 0 6px rgba(0, 230, 118, 0.6); transition: transform 0.1s, background 0.1s; }
         .tm-slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: #ffffff; box-shadow: 0 0 10px rgba(0, 230, 118, 0.9); }
+        
+        .tm-color-input { -webkit-appearance: none; border: none; border-radius: 4px; cursor: pointer; height: 26px; padding: 0; overflow: hidden; }
+        .tm-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+        .tm-color-input::-webkit-color-swatch { border: 1px solid #30363d; border-radius: 4px; }
+
         .tm-val-label { color: #00e676; font-size: 11px; min-width: 36px; text-align: center; font-weight: 800; display: inline-block; background: #161c23; padding: 4px 6px; border-radius: 4px; border: 1px solid #30363d; }
 
         #tm-save-btn { background: #00e676; border-color: #00e676; color: #0c1015; font-weight: 800; font-size: 13px; padding: 10px; }
@@ -224,7 +236,7 @@ window.ImmortalDiceAssets = (function() {
         .tm-type-d6-aetherglass { --body-fill: radial-gradient(circle at 28% 18%, rgba(117,255,244,0.24), transparent 30%), radial-gradient(circle at 78% 82%, rgba(214,146,74,0.18), transparent 32%), linear-gradient(150deg, #142a2d 0%, #071114 58%, #180d0b 100%); --plate-fill-solid: #123136; --ring-color: #d6924a; --ring-glow: rgba(95,248,236,0.72); --ring-glow-soft: rgba(95,248,236,0.34); --num-color: #7dfff4; --num-glow: rgba(95,248,236,0.98); --num-glow-soft: rgba(214,146,74,0.52); --pip-hi: #effffd; --pip-mid: #5ff8ec; --pip-dark: #07545d; --pip-glow: rgba(95,248,236,0.78); --aether-pip-hi: #effffd; --aether-pip-mid: #98fff7; --aether-pip-core: #36ddcf; --aether-pip-dark: #0a6068; }
         .tm-type-d6-aetherglass.tm-theme-lava { --ring-color: #ff9a3d; --ring-glow: rgba(255,120,40,0.74); --ring-glow-soft: rgba(255,80,20,0.34); --num-color: #ffe0b0; --num-glow: rgba(255,140,50,0.95); --num-glow-soft: rgba(255,70,20,0.50); --pip-hi: #fff2d0; --pip-mid: #ff8a30; --pip-dark: #7a2404; --pip-glow: rgba(255,140,50,0.75); --aether-pip-hi: #fff2d0; --aether-pip-mid: #ffb45c; --aether-pip-core: #ff6a21; --aether-pip-dark: #7a2404; }
         .tm-type-d6-aetherglass.tm-theme-blood { --ring-color: #d83a2a; --ring-glow: rgba(255,50,40,0.72); --ring-glow-soft: rgba(180,20,20,0.34); --num-color: #ffbbb3; --num-glow: rgba(255,50,40,0.95); --num-glow-soft: rgba(180,20,20,0.52); --pip-hi: #ffe0dc; --pip-mid: #ff4b3d; --pip-dark: #6b0804; --pip-glow: rgba(255,50,40,0.72); --aether-pip-hi: #ffe0dc; --aether-pip-mid: #ff8a80; --aether-pip-core: #e9251b; --aether-pip-dark: #6b0804; }
-        .tm-type-d6-aetherglass.tm-theme-void { --ring-color: #9d4edd; --ring-glow: rgba(180,90,240,0.72); --ring-glow-soft: rgba(120,40,190,0.34); --num-color: #e0b8ff; --num-glow: rgba(180,90,240,0.96); --num-glow-soft: rgba(120,40,190,0.52); --pip-hi: #f0d8ff; --pip-mid: #a855f7; --pip-dark: #3a1058; --pip-glow: rgba(180,90,240,0.70); --aether-pip-hi: #f0d8ff; --aether-pip-mid: #c084fc; --aether-pip-core: #8b3ddb; --aether-pip-dark: #3a1058; }
+        .tm-type-d6-aetherglass.tm-theme-void { --ring-color: #9d4edd; --ring-glow: rgba(180,90,240,0.72); --ring-glow-soft: rgba(120,40,190,0.34); --num-color: #e0b8ff; --num-glow: rgba(180,90,240,0.96); --num-glow-soft: rgba(120,40,190,0.52); --pip-hi: #f0d8ff; --pip-mid: #a855f7; --pip-dark: #3a1058; --pip-glow: rgba(180,90,240,0.65); --aether-pip-hi: #f0d8ff; --aether-pip-mid: #c084fc; --aether-pip-core: #8b3ddb; --aether-pip-dark: #3a1058; }
         .tm-type-d6-aetherglass.tm-theme-toxic { --ring-color: #39ff14; --ring-glow: rgba(70,255,30,0.72); --ring-glow-soft: rgba(40,200,10,0.34); --num-color: #baffa8; --num-glow: rgba(70,255,30,0.95); --num-glow-soft: rgba(40,200,10,0.52); --pip-hi: #ddffcf; --pip-mid: #5cff2e; --pip-dark: #124a08; --pip-glow: rgba(70,255,30,0.65); --aether-pip-hi: #ddffcf; --aether-pip-mid: #9cff80; --aether-pip-core: #45e91f; --aether-pip-dark: #124a08; }
         .tm-type-d6-aetherglass.tm-theme-celestial { --ring-color: #fff6db; --ring-glow: rgba(255,240,180,0.86); --ring-glow-soft: rgba(255,220,140,0.48); --num-color: #fff8df; --num-glow: rgba(255,245,200,0.98); --num-glow-soft: rgba(255,220,140,0.58); --pip-hi: #ffffff; --pip-mid: #ffe9a8; --pip-dark: #b8934a; --pip-glow: rgba(255,240,180,0.80); --aether-pip-hi: #ffffff; --aether-pip-mid: #fff0ba; --aether-pip-core: #e6c463; --aether-pip-dark: #8f6f2a; }
 
@@ -344,6 +356,21 @@ window.ImmortalDiceAssets = (function() {
 
             <!-- 2. SEKME: GÖRSEL DETAYLAR -->
             <div id="tab-gorsel" class="tm-tab-content">
+            
+                <!-- D20 ve D4 İÇİN ÜÇGEN ÇİZGİ AYARLARI -->
+                <div class="tm-tri-settings" style="display:none; flex-direction:column; gap:8px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 85px; color:#8b949e;">Çizgi Kalınlığı</span>
+                        <input type="range" class="tm-slider" id="tm-d20-width-slider" min="0" max="25" value="8" step="1" style="flex: 1;">
+                        <span id="tm-d20-width-val" class="tm-val-label">8</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 85px; color:#8b949e;">Çizgi Rengi</span>
+                        <input type="color" id="tm-d20-color-picker" value="#ff8a3d" class="tm-color-input" style="flex: 1;">
+                    </div>
+                </div>
+
+                <!-- D6 ZIRH VE YARIK AYARLARI -->
                 <div class="tm-skel-settings" style="display:flex; flex-direction:column; gap:8px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 11px; width: 65px; color:#8b949e;">Pip Boyut</span>
@@ -439,7 +466,7 @@ window.ImmortalDiceAssets = (function() {
                             </optgroup>
                             <optgroup label="D20">
                                 <option value="D20_numbers">D20 Sayı</option>
-                                <option value="D20_dots">D20 Nokta</option>
+                            <option value="D20_dots">D20 Nokta</option>
                                 <option value="D20_skull">D20 Kurukafa</option>
                             </optgroup>
                         </select>
@@ -525,6 +552,7 @@ window.ImmortalDiceAssets = (function() {
 
     function getSkullSVG() { return `<div class="tm-skull-icon"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path class="skull-fill" d="M 50,15 C 20,15 15,35 15,55 C 15,70 25,75 30,85 L 70,85 C 75,75 85,70 85,55 C 85,35 80,15 50,15 Z"/><polygon class="skull-dark" points="25,45 45,55 35,68"/><polygon class="skull-dark" points="75,45 55,55 65,68"/><polygon class="skull-dark" points="50,65 46,75 54,75"/><path fill="rgba(0,0,0,0.85)" d="M 50,75 C 30,75 5,90 10,105 C 20,95 30,90 40,88 C 45,87 55,87 60,88 C 70,90 80,95 90,105 C 95,90 70,75 50,75 Z"/></svg></div>`; }
     function getHornedSkullSVG() { return `<div class="tm-skull-icon horned-skull"><svg viewBox="-30 -20 160 150" xmlns="http://www.w3.org/2000/svg"><path class="skull-fill" d="M 18,30 C -15,0 -35,30 -10,48 C -5,35 15,25 30,35 Z"/><path class="skull-fill" d="M 82,30 C 115,0 135,30 110,48 C 105,35 85,25 70,35 Z"/><path class="skull-fill" d="M 50,10 C 15,10 5,40 10,65 C 15,80 25,85 30,100 L 70,100 C 75,85 85,80 90,65 C 95,40 85,10 50,10 Z"/><path fill="rgba(0,0,0,0.3)" d="M 10,50 C 25,45 40,50 50,55 C 60,50 75,45 90,50 C 85,65 75,70 70,65 C 60,60 40,60 30,65 C 25,70 15,65 10,50 Z"/><polygon class="skull-dark" points="20,45 45,55 35,68"/><polygon class="skull-dark" points="80,45 55,55 65,68"/><polygon class="skull-dark" points="50,65 44,78 56,78"/><path fill="rgba(0,0,0,0.9)" d="M 50,80 C 20,80 -10,100 -15,125 C 5,105 25,100 40,95 C 45,93 55,93 60,95 C 75,100 95,105 115,125 C 110,100 80,80 50,80 Z"/></svg></div>`; }
+    function getArtifactSVG() { return `<svg viewBox="0 0 100 100" style="position:absolute; width:130%; height:130%; opacity:0.35; filter: drop-shadow(0 0 4px var(--num-glow)); animation: spin 20s linear infinite;"><circle cx="50" cy="50" r="45" fill="none" stroke="var(--num-color)" stroke-width="2" stroke-dasharray="4 8"/><circle cx="50" cy="50" r="38" fill="none" stroke="var(--num-color)" stroke-width="1"/><polygon points="50,15 80,75 20,75" fill="none" stroke="var(--num-color)" stroke-width="1" opacity="0.5"/><polygon points="50,85 80,25 20,25" fill="none" stroke="var(--num-color)" stroke-width="1" opacity="0.5"/></svg><style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>`; }
 
     function getCornerPlateSVG(dir) {
         let points = ""; let edge = "";
@@ -588,6 +616,7 @@ window.ImmortalDiceAssets = (function() {
         getMenuHTML: getMenuHTML,
         getSkullSVG: getSkullSVG,
         getHornedSkullSVG: getHornedSkullSVG,
+        getArtifactSVG: getArtifactSVG,
         getCornerPlateSVG: getCornerPlateSVG,
         getJaggedHolePath: getJaggedHolePath,
         getCompactPipsHTML: getCompactPipsHTML
