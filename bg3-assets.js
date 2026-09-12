@@ -36,60 +36,69 @@ window.ImmortalDiceAssets = (function() {
             transform-style: preserve-3d;
         }
 
-        .tm-body-fill-layer {
-            position: absolute; inset: 0;
-            border-radius: 4%;
-            overflow: hidden;
-            z-index: 1;
-            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
-            transform-style: preserve-3d;
-        }
-
-        .tm-inner-mass {
-            position: absolute;
-            width: calc(var(--d-size) * 0.98); height: calc(var(--d-size) * 0.98);
-            border-radius: 18%;
-            border: none !important; box-shadow: none !important;
-            top: 1%; left: 1%;
-            transform-style: preserve-3d;
-        }
-
-        .tm-dice-content {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; z-index: 10;
-            transform-style: preserve-3d;
-        }
-
-        .face-d4 .tm-dice-content, .face-d20 .tm-dice-content {
-            top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%);
-        }
-        .tm-dice-content.inverted {
-            transform: translate(-50%, -50%) rotateZ(180deg) !important;
-        }
-
         .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* ====== D20 ve D4: ORİJİNAL ARKA PLAN VE KUSURSUZ 3 KENAR ÇİZGİSİ ====== */
+        /* ====== D20 ve D4 TERTEMİZ DÜZELTME: ORİJİNAL RENKLER GERİ DÖNDÜ ====== */
         .face-d4, .face-d20 {
             top: var(--tri-offset-y) !important;
             left: 0;
-            /* ESKİ MÜKEMMEL ARKA PLAN RENKLERİ GERİ GELDİ */
-            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%)) !important;
-            border: none !important; /* Bozuk kenarlık kaldırıldı */
+            background: transparent !important;
+            border: none !important;
             box-shadow:
                 0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)),
                 0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)),
                 inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
 
+        /* Tüm yüzeylerin içine yerleşen ana renk (gradient) katmanı */
+        .tm-body-fill-layer {
+            position: absolute; inset: 0;
+            overflow: hidden;
+            z-index: 1;
+            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
+            transform-style: preserve-3d;
+            transition: background 0.3s;
+        }
+        
+        .face-d6 .tm-body-fill-layer { border-radius: 4%; }
+        
+        /* D20 ve D4 için üçgen maskeleme (sadece dış hatları keser, renkleri bozmaz) */
+        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            border-radius: 0;
+        }
+
+        /* YENİ: Kusursuz 3 Kenarlı SVG Çizgi Katmanı */
+        .tm-tri-border-svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            overflow: visible;
+        }
+        .tm-tri-border-svg polygon {
+            fill: none;
+            stroke: var(--d20-edge-color, #ff8a3d);
+            stroke-width: calc(var(--d20-edge-w, 4) * 1px); 
+            vector-effect: non-scaling-stroke;
+            stroke-linejoin: round;
+        }
+
         .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
         .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
 
+        .tm-inner-mass { position: absolute; width: calc(var(--d-size) * 0.98); height: calc(var(--d-size) * 0.98); border-radius: 18%; border: none !important; box-shadow: none !important; top: 1%; left: 1%; transform-style: preserve-3d; }
+
+        .tm-dice-content { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; transform-style: preserve-3d; }
+        .face-d4 .tm-dice-content, .face-d20 .tm-dice-content { top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%); }
+        .tm-dice-content.inverted { transform: translate(-50%, -50%) rotateZ(180deg) !important; }
+
         .tm-face-glow { --glow-alpha: calc(var(--glow-int, 65) / 100); z-index: 100; }
-        .tm-face-glow.face-d4, .tm-face-glow.face-d20 {
-            box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
-        }
-        .tm-face-glow:not(.face-d6) { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
+        .tm-face-glow.face-d4, .tm-face-glow.face-d20 { box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important; }
+        
+        .tm-face-glow:not(.face-d6) .tm-body-fill-layer { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
+        .tm-face-glow:not(.face-d6) .tm-tri-border-svg polygon { filter: drop-shadow(0 0 6px var(--ring-glow)); }
 
         .tm-pips-container { display: grid; grid-template-areas: "a b c" "d e f" "g h i"; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); width: 100%; height: 100%; gap: 0; transform-style: preserve-3d; }
         .tm-pip { border-radius: 50%; position: relative; background: radial-gradient(circle at 38% 30%, var(--pip-hi, #ffdca0) 0%, var(--pip-mid, #ff7a3d) 42%, var(--pip-dark, #7a1e06) 100%); box-shadow: inset -1px -1px 2px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.3); }
@@ -546,6 +555,16 @@ window.ImmortalDiceAssets = (function() {
         else if (dir === 'br') { points = "25,100 100,25 100,100"; edge = '<line x1="25" y1="100" x2="100" y2="25" class="plate-edge"/>'; }
         return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%; height:100%; display:block; overflow:visible;" xmlns="http://www.w3.org/2000/svg"><polygon points="${points}" class="plate-fill"/>${edge}</svg>`;
     }
+    
+    function getTriangleBorderSVG() {
+        return `
+        <div class="tm-tri-border-svg">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polygon points="50,0 0,100 100,100" />
+            </svg>
+        </div>
+        `;
+    }
 
     function seededRandom(seed) { let x = Math.sin(seed) * 10000; return x - Math.floor(x); }
 
@@ -602,6 +621,7 @@ window.ImmortalDiceAssets = (function() {
         getHornedSkullSVG: getHornedSkullSVG,
         getArtifactSVG: getArtifactSVG,
         getCornerPlateSVG: getCornerPlateSVG,
+        getTriangleBorderSVG: getTriangleBorderSVG,
         getJaggedHolePath: getJaggedHolePath,
         getCompactPipsHTML: getCompactPipsHTML
     };
