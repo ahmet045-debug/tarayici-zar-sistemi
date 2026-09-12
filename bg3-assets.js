@@ -1,4 +1,4 @@
-window.BG3DiceAssets = (function() {
+window.ImmortalDiceAssets = (function() {
 
     function getCSS() {
         return `
@@ -62,12 +62,8 @@ window.BG3DiceAssets = (function() {
             transform-style: preserve-3d;
         }
 
-        .face-d4 .tm-dice-content, .face-d20 .tm-dice-content {
-            top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%);
-        }
-        .tm-dice-content.inverted {
-            transform: translate(-50%, -50%) rotateZ(180deg) !important;
-        }
+        .face-d4 .tm-dice-content, .face-d20 .tm-dice-content { top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%); }
+        .tm-dice-content.inverted { transform: translate(-50%, -50%) rotateZ(180deg) !important; }
 
         .face-d6 { width: var(--d-size); height: var(--d-size); }
 
@@ -76,10 +72,7 @@ window.BG3DiceAssets = (function() {
             left: 0;
             background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
             border: calc(var(--d-size) * 0.045) solid var(--ring-color, #8a5a3a) !important;
-            box-shadow:
-                0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)),
-                0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)),
-                inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
+            box-shadow: 0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)), 0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)), inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
 
         .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
@@ -89,10 +82,7 @@ window.BG3DiceAssets = (function() {
 
         .tm-face-glow.face-d4, .tm-face-glow.face-d20 {
             border-color: var(--ring-color, #8a5a3a) !important;
-            box-shadow:
-                0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)),
-                0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)),
-                inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
+            box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
         }
         .tm-face-glow:not(.face-d6) { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
 
@@ -121,15 +111,9 @@ window.BG3DiceAssets = (function() {
         .tm-skull-icon svg .skull-dark { fill: rgba(0,0,0,0.55); }
 
         .tm-skull-pip { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
-
         .tm-face-body { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; transform-style: preserve-3d; }
 
-        .tm-corner-plate {
-            position: absolute; width: 28%; height: 28%; pointer-events: none; z-index: 16; overflow: visible;
-            --p-off: calc(var(--plate-offset, 0) * 1%);
-            transform: translateZ(calc(var(--plate-depth, 1) * var(--d-scale, 1) * 1px));
-            transform-style: preserve-3d;
-        }
+        .tm-corner-plate { position: absolute; width: 28%; height: 28%; pointer-events: none; z-index: 16; overflow: visible; --p-off: calc(var(--plate-offset, 0) * 1%); transform: translateZ(calc(var(--plate-depth, 1) * var(--d-scale, 1) * 1px)); transform-style: preserve-3d; }
         .tm-corner-plate svg { width: 100%; height: 100%; display: block; overflow: visible; }
         .tm-corner-plate .plate-fill { fill: var(--plate-fill-solid, #4a3a2c); }
         .tm-corner-plate .plate-edge { stroke: var(--ring-color, #8a5a3a); stroke-width: 5; stroke-linecap: round; }
@@ -142,7 +126,7 @@ window.BG3DiceAssets = (function() {
         .tm-face-glow .tm-corner-plate .plate-fill { fill: var(--ring-color, #8a5a3a) !important; }
         .tm-face-glow .tm-skull-icon svg .skull-fill { fill: #ffffff !important; }
 
-        /* ================= YENİ SEKME (TAB) TABANLI MODERN PANEL ================= */
+        /* ================= MODERN YENİDEN BOYUTLANDIRILABİLİR PANEL ================= */
         #tm-dice-menu {
             position: fixed;
             background: rgba(10, 14, 18, var(--panel-opac, 0.96));
@@ -152,89 +136,47 @@ window.BG3DiceAssets = (function() {
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 230, 118, 0.12);
             display: none;
             flex-direction: column;
-            width: var(--panel-w, 340px);
             pointer-events: auto;
             z-index: 999995;
-            overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #f0f6fc;
             box-sizing: border-box;
-        }
-
-        #tm-menu-header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #0d1117;
-            padding: 10px 14px;
-            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
-            cursor: move;
-            user-select: none;
+            
+            /* Native Resize Ayarları */
+            resize: horizontal;
+            min-width: 280px;
+            max-width: 550px;
+            overflow: hidden; /* Resize için şart */
         }
         
-        /* SOL ÜST İÇ TUTAMAÇ */
-        #tm-menu-header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* Şık Resize Handle (Tarayıcının çirkin tutamacını gizleyip kendimiz tasarlıyoruz) */
+        #tm-dice-menu::-webkit-resizer {
+            background-color: transparent;
+            background-image: radial-gradient(circle at 100% 100%, #00e676 10%, transparent 20%);
+            background-size: 8px 8px;
         }
-        #tm-menu-drag-grip {
-            font-size: 16px;
-            color: #00e676;
-            cursor: grab;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
+
+        #tm-menu-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0d1117; padding: 10px 14px; border-bottom: 1px solid rgba(0, 230, 118, 0.2); cursor: move; user-select: none; }
+        #tm-menu-header-left { display: flex; align-items: center; gap: 10px; }
+        #tm-menu-drag-grip { font-size: 16px; color: #00e676; cursor: grab; display: flex; align-items: center; justify-content: center; padding: 2px; border-radius: 4px; transition: background 0.2s; }
         #tm-menu-drag-grip:hover { background: rgba(0, 230, 118, 0.15); }
         #tm-menu-drag-grip:active { cursor: grabbing; }
 
         #tm-menu-drag-title { font-size: 13px; font-weight: 900; letter-spacing: 1px; color: #f0f6fc; text-shadow: 0 0 4px rgba(255,255,255,0.2); }
-        
-        #tm-menu-close-btn {
-            font-size: 14px; font-weight: bold; color: #8b949e; cursor: pointer; width: 24px; height: 24px;
-            display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s;
-        }
+        #tm-menu-close-btn { font-size: 14px; font-weight: bold; color: #8b949e; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s; }
         #tm-menu-close-btn:hover { color: #ffffff; background: #e53935; }
 
-        /* YENİ ŞERİT (TAB) MENÜSÜ */
-        #tm-tabs-bar {
-            display: flex;
-            background: #161c23;
-            border-bottom: 2px solid #21262d;
-        }
-        .tm-tab-btn {
-            flex: 1;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 10px;
-            font-weight: 800;
-            color: #8b949e;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px; /* Çizginin üstüne binmesi için */
-            transition: all 0.2s;
-            user-select: none;
-            letter-spacing: 0.5px;
-        }
+        #tm-tabs-bar { display: flex; background: #161c23; border-bottom: 2px solid #21262d; }
+        .tm-tab-btn { flex: 1; text-align: center; padding: 10px 0; font-size: 10px; font-weight: 800; color: #8b949e; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; user-select: none; letter-spacing: 0.5px; }
         .tm-tab-btn:hover { color: #c9d1d9; background: rgba(255,255,255,0.03); }
         .tm-tab-btn.active { color: #00e676; border-bottom-color: #00e676; background: rgba(0, 230, 118, 0.05); }
 
-        .tm-menu-body {
-            display: flex; flex-direction: column;
-            max-height: 75vh; overflow-y: auto; overflow-x: hidden;
-            padding: 14px;
-            background: rgba(10, 14, 18, 0.5);
-        }
+        .tm-menu-body { display: flex; flex-direction: column; max-height: 75vh; overflow-y: auto; overflow-x: hidden; padding: 14px; background: rgba(10, 14, 18, 0.5); }
         .tm-menu-body::-webkit-scrollbar { width: 5px; }
         .tm-menu-body::-webkit-scrollbar-track { background: transparent; }
         .tm-menu-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
         .tm-menu-body:hover::-webkit-scrollbar-thumb { background: #00e676; }
 
-        /* SEKME İÇERİKLERİ (TABS) */
         .tm-tab-content { display: none; flex-direction: column; gap: 12px; }
         .tm-tab-content.active { display: flex; animation: tmFadeIn 0.2s ease-in-out; }
         @keyframes tmFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -242,30 +184,17 @@ window.BG3DiceAssets = (function() {
         .tm-menu-section { display: flex; flex-direction: column; gap: 6px; }
         .tm-sec-title { color: #8b949e; font-size: 9px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 2px; }
 
-        .tm-menu-btn-action {
-            background: #161c23; border: 1px solid #30363d; color: #f0f6fc; padding: 8px 12px;
-            cursor: pointer; font-weight: 700; font-size: 12px; border-radius: 6px; text-align: center;
-            transition: all 0.18s ease-in-out; display: flex; justify-content: center; align-items: center; user-select: none;
-        }
+        .tm-menu-btn-action { background: #161c23; border: 1px solid #30363d; color: #f0f6fc; padding: 8px 12px; cursor: pointer; font-weight: 700; font-size: 12px; border-radius: 6px; text-align: center; transition: all 0.18s ease-in-out; display: flex; justify-content: center; align-items: center; user-select: none; }
         .tm-menu-btn-action:hover { background: #1f2937; border-color: #00e676; color: #00e676; box-shadow: 0 0 8px rgba(0, 230, 118, 0.2); }
 
-        .tm-select {
-            width: 100%; background: #0d1117; color: #f0f6fc; border: 1px solid #30363d; padding: 8px;
-            border-radius: 6px; font-family: inherit; font-size: 12px; font-weight: 600; outline: none; cursor: pointer;
-            box-sizing: border-box; transition: border-color 0.2s;
-        }
+        .tm-select { width: 100%; background: #0d1117; color: #f0f6fc; border: 1px solid #30363d; padding: 8px; border-radius: 6px; font-family: inherit; font-size: 12px; font-weight: 600; outline: none; cursor: pointer; box-sizing: border-box; transition: border-color 0.2s; }
         .tm-select:hover, .tm-select:focus { border-color: #00e676; }
         .tm-select optgroup { font-style: italic; font-weight: 600; color: #00e676; background: #0d1117; }
         .tm-select optgroup option { font-style: normal; color: #f0f6fc; background: #161c23; }
 
-        /* YENİ KALIN VE RAHAT SLIDER TASARIMI */
         .tm-slider { -webkit-appearance: none; width: 100%; height: 8px; background: #161c23; outline: none; border-radius: 4px; border: 1px solid #30363d; margin: 0; }
-        .tm-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%;
-            background: #00e676; cursor: pointer; box-shadow: 0 0 6px rgba(0, 230, 118, 0.6); transition: transform 0.1s, background 0.1s;
-        }
+        .tm-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #00e676; cursor: pointer; box-shadow: 0 0 6px rgba(0, 230, 118, 0.6); transition: transform 0.1s, background 0.1s; }
         .tm-slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: #ffffff; box-shadow: 0 0 10px rgba(0, 230, 118, 0.9); }
-
         .tm-val-label { color: #00e676; font-size: 11px; min-width: 36px; text-align: center; font-weight: 800; display: inline-block; background: #161c23; padding: 4px 6px; border-radius: 4px; border: 1px solid #30363d; }
 
         #tm-save-btn { background: #00e676; border-color: #00e676; color: #0c1015; font-weight: 800; font-size: 13px; padding: 10px; }
@@ -277,10 +206,7 @@ window.BG3DiceAssets = (function() {
         .tm-preset-name:hover { color: #00e676; background: #21262d; border-radius: 6px; }
         .tm-preset-del { position: absolute; top: -5px; right: -5px; background: #e53935; color: #fff; font-size: 10px; font-weight: bold; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; border: 1px solid #0d1117; }
 
-        #tm-custom-dialog {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 18, 0.96); backdrop-filter: blur(8px);
-            display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; z-index: 50; border-radius: 12px;
-        }
+        #tm-custom-dialog { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 18, 0.96); backdrop-filter: blur(8px); display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; z-index: 50; border-radius: 12px; }
         #tm-dialog-msg { color: #f0f6fc; font-size: 12px; font-weight: 700; margin-bottom: 14px; line-height: 1.5; }
         #tm-dialog-ok, #tm-dialog-cancel { width: 100%; padding: 8px; margin-bottom: 6px; border-radius: 6px; cursor: pointer; font-weight: 800; border: 1px solid; font-size: 11px; }
         #tm-dialog-ok { background: #00e676; border-color: #00e676; color: #0c1015; }
@@ -299,7 +225,7 @@ window.BG3DiceAssets = (function() {
         .tm-type-d6-aetherglass.tm-theme-lava { --ring-color: #ff9a3d; --ring-glow: rgba(255,120,40,0.74); --ring-glow-soft: rgba(255,80,20,0.34); --num-color: #ffe0b0; --num-glow: rgba(255,140,50,0.95); --num-glow-soft: rgba(255,70,20,0.50); --pip-hi: #fff2d0; --pip-mid: #ff8a30; --pip-dark: #7a2404; --pip-glow: rgba(255,140,50,0.75); --aether-pip-hi: #fff2d0; --aether-pip-mid: #ffb45c; --aether-pip-core: #ff6a21; --aether-pip-dark: #7a2404; }
         .tm-type-d6-aetherglass.tm-theme-blood { --ring-color: #d83a2a; --ring-glow: rgba(255,50,40,0.72); --ring-glow-soft: rgba(180,20,20,0.34); --num-color: #ffbbb3; --num-glow: rgba(255,50,40,0.95); --num-glow-soft: rgba(180,20,20,0.52); --pip-hi: #ffe0dc; --pip-mid: #ff4b3d; --pip-dark: #6b0804; --pip-glow: rgba(255,50,40,0.72); --aether-pip-hi: #ffe0dc; --aether-pip-mid: #ff8a80; --aether-pip-core: #e9251b; --aether-pip-dark: #6b0804; }
         .tm-type-d6-aetherglass.tm-theme-void { --ring-color: #9d4edd; --ring-glow: rgba(180,90,240,0.72); --ring-glow-soft: rgba(120,40,190,0.34); --num-color: #e0b8ff; --num-glow: rgba(180,90,240,0.96); --num-glow-soft: rgba(120,40,190,0.52); --pip-hi: #f0d8ff; --pip-mid: #a855f7; --pip-dark: #3a1058; --pip-glow: rgba(180,90,240,0.70); --aether-pip-hi: #f0d8ff; --aether-pip-mid: #c084fc; --aether-pip-core: #8b3ddb; --aether-pip-dark: #3a1058; }
-        .tm-type-d6-aetherglass.tm-theme-toxic { --ring-color: #39ff14; --ring-glow: rgba(70,255,30,0.72); --ring-glow-soft: rgba(40,200,10,0.34); --num-color: #baffa8; --num-glow: rgba(70,255,30,0.95); --num-glow-soft: rgba(40,200,10,0.52); --pip-hi: #ddffcf; --pip-mid: #5cff2e; --pip-dark: #124a08; --pip-glow: rgba(70,255,30,0.70); --aether-pip-hi: #ddffcf; --aether-pip-mid: #9cff80; --aether-pip-core: #45e91f; --aether-pip-dark: #124a08; }
+        .tm-type-d6-aetherglass.tm-theme-toxic { --ring-color: #39ff14; --ring-glow: rgba(70,255,30,0.72); --ring-glow-soft: rgba(40,200,10,0.34); --num-color: #baffa8; --num-glow: rgba(70,255,30,0.95); --num-glow-soft: rgba(40,200,10,0.52); --pip-hi: #ddffcf; --pip-mid: #5cff2e; --pip-dark: #124a08; --pip-glow: rgba(70,255,30,0.65); --aether-pip-hi: #ddffcf; --aether-pip-mid: #9cff80; --aether-pip-core: #45e91f; --aether-pip-dark: #124a08; }
         .tm-type-d6-aetherglass.tm-theme-celestial { --ring-color: #fff6db; --ring-glow: rgba(255,240,180,0.86); --ring-glow-soft: rgba(255,220,140,0.48); --num-color: #fff8df; --num-glow: rgba(255,245,200,0.98); --num-glow-soft: rgba(255,220,140,0.58); --pip-hi: #ffffff; --pip-mid: #ffe9a8; --pip-dark: #b8934a; --pip-glow: rgba(255,240,180,0.80); --aether-pip-hi: #ffffff; --aether-pip-mid: #fff0ba; --aether-pip-core: #e6c463; --aether-pip-dark: #8f6f2a; }
 
         .tm-type-d6-aetherglass .face-d6 { clip-path: polygon(12% 0%, 88% 0%, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0% 88%, 0% 12%); border-color: rgba(214,146,74,0.82); box-shadow: 0 0 calc(var(--d-size) * 0.16) rgba(95,248,236,0.34), inset 0 0 calc(var(--d-size) * 0.18) rgba(0,0,0,0.74), inset 0 0 calc(var(--d-size) * 0.06) rgba(95,248,236,0.28); }
@@ -364,7 +290,7 @@ window.BG3DiceAssets = (function() {
         <div id="tm-menu-header-bar">
             <div id="tm-menu-header-left">
                 <span id="tm-menu-drag-grip" title="Paneli Kaydır">⠿</span>
-                <span id="tm-menu-drag-title">⚡ BG3 DICE CONTROL</span>
+                <span id="tm-menu-drag-title">⚡ IMMORTAL DICE</span>
             </div>
             <span id="tm-menu-close-btn" title="Paneli Kapat">✕</span>
         </div>
@@ -373,7 +299,7 @@ window.BG3DiceAssets = (function() {
         <div id="tm-tabs-bar">
             <div class="tm-tab-btn active" data-target="tab-temel">TEMEL</div>
             <div class="tm-tab-btn" data-target="tab-gorsel">GÖRSEL</div>
-            <div class="tm-tab-btn" data-target="tab-kova">KOVA</div>
+            <div class="tm-tab-btn" id="tm-tab-btn-kova" data-target="tab-kova" style="display:none;">KOVA</div>
             <div class="tm-tab-btn" data-target="tab-sistem">SİSTEM</div>
         </div>
 
@@ -494,7 +420,7 @@ window.BG3DiceAssets = (function() {
                 </div>
             </div>
 
-            <!-- 3. SEKME: KOVA ZARLARI -->
+            <!-- 3. SEKME: KOVA ZARLARI (GİZLİ BAŞLAR) -->
             <div id="tab-kova" class="tm-tab-content tm-mini-dice-row">
                 <span class="tm-sec-title">Kovaya Özel Renkli Zar Ekle</span>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -566,11 +492,6 @@ window.BG3DiceAssets = (function() {
 
                 <div class="tm-menu-section" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #30363d;">
                     <span class="tm-sec-title" style="color:#00e676;">Panel Görünümü Ayarları</span>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
-                        <span style="font-size: 11px; width: 60px; color:#8b949e;">Genişlik</span>
-                        <input type="range" class="tm-slider" id="tm-panel-width-slider" min="260" max="450" value="340" step="5" style="flex: 1;">
-                        <span id="tm-panel-width-val" class="tm-val-label">340px</span>
-                    </div>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
                         <span style="font-size: 11px; width: 60px; color:#8b949e;">Opaklık</span>
                         <input type="range" class="tm-slider" id="tm-panel-opacity-slider" min="50" max="100" value="96" step="1" style="flex: 1;">
