@@ -28,7 +28,7 @@ window.BG3DiceAssets = (function() {
             font-weight: bold;
             backface-visibility: hidden;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
             overflow: visible;
             background-size: cover;
             background-position: center;
@@ -44,6 +44,7 @@ window.BG3DiceAssets = (function() {
             z-index: 1;
             background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
             transform-style: preserve-3d;
+            transition: background 0.3s;
         }
 
         .tm-inner-mass {
@@ -95,6 +96,9 @@ window.BG3DiceAssets = (function() {
                 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)),
                 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)),
                 inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
+        }
+        
+        .tm-face-glow:not(.face-d6) {
             filter: brightness(calc(1 + (var(--glow-alpha) * 0.4)));
         }
 
@@ -463,11 +467,9 @@ window.BG3DiceAssets = (function() {
             box-shadow: inset 0 0 calc(var(--d-size) * 0.14) rgba(0,0,0,0.85), inset 0 calc(var(--d-size) * 0.02) calc(var(--d-size) * 0.03) rgba(0,0,0,0.6) !important;
             overflow: visible;
         }
-        .tm-trash-lid-body { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; perspective: calc(var(--d-size) * 4); }
-
-        .tm-trash-lid-collar { position: absolute; width: calc(88% * var(--lid-width, 1)); height: calc(88% * var(--lid-height, 1)); border-radius: 10%; transform: translateZ(calc(var(--d-scale, 1) * var(--lid-depth, 1) * 3px)); background: linear-gradient(135deg, var(--trash-lid-wall-top, #454e48) 0%, var(--trash-lid-wall-bot, #181c19) 45%, var(--trash-lid-wall-top, #454e48) 55%, var(--trash-lid-wall-bot, #181c19) 100%); box-shadow: 0 calc(var(--d-size) * 0.02) calc(var(--d-size) * 0.03) rgba(0,0,0,0.55), inset 0 0 calc(var(--d-size) * 0.02) rgba(0,0,0,0.4); }
-        .tm-trash-lid-cap { position: absolute; width: calc(70% * var(--lid-width, 1)); height: calc(70% * var(--lid-height, 1)); border-radius: 8%; transform: translateZ(calc(var(--d-scale, 1) * var(--lid-depth, 1) * 9px)); background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.42) 0%, transparent 42%), radial-gradient(circle at 72% 78%, rgba(0,0,0,0.30) 0%, transparent 55%), linear-gradient(160deg, var(--trash-lid-hi, #8c988f) 0%, var(--trash-lid-mid, #56615a) 55%, var(--trash-lid-low, #313832) 100%); box-shadow: 0 0 0 calc(var(--d-size) * 0.012) var(--trash-lid-rim), 0 calc(var(--d-size) * 0.05) calc(var(--d-size) * 0.09) rgba(0,0,0,0.6), inset 0 calc(var(--d-size) * 0.04) calc(var(--d-size) * 0.05) rgba(255,255,255,0.25), inset 0 calc(var(--d-size) * -0.05) calc(var(--d-size) * 0.06) rgba(0,0,0,0.5); }
-        .tm-trash-lid-knob { position: absolute; width: calc(24% * var(--lid-width, 1)); height: calc(24% * var(--lid-height, 1)); border-radius: 15%; transform: translateZ(calc(var(--d-scale, 1) * var(--lid-depth, 1) * 13px)) rotate(45deg); background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.55) 0%, transparent 45%), linear-gradient(160deg, var(--trash-lid-hi, #9aa89f) 0%, var(--trash-lid-low, #262b26) 100%); box-shadow: 0 calc(var(--d-size) * 0.02) calc(var(--d-size) * 0.03) rgba(0,0,0,0.6), inset 0 calc(var(--d-size) * 0.015) calc(var(--d-size) * 0.02) rgba(255,255,255,0.3); }
+        
+        /* PERSPEKTİF KALDIRILDI: 3D kaymasını engellemek için */
+        .tm-trash-lid-body { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; }
 
         /* YENI MATEMATIK İLE TAM OTURAN DUVARLAR */
         .tm-trash-lid-tier { position: absolute; left: 50%; top: 50%; display: block; transform-style: preserve-3d; transform-origin: center; pointer-events: none; background: none; box-shadow: none; }
@@ -475,7 +477,7 @@ window.BG3DiceAssets = (function() {
         .tm-trash-lid-cap { width: var(--lid-cap-w); height: var(--lid-cap-h); --tier-depth: var(--lid-cap-thickness); --tier-half: var(--lid-cap-half); transform: translate(-50%, -50%) translateZ(var(--lid-cap-z)); }
         .tm-trash-lid-knob { width: var(--lid-knob-w); height: var(--lid-knob-h); --tier-depth: var(--lid-knob-thickness); --tier-half: var(--lid-knob-half); transform: translate(-50%, -50%) translateZ(var(--lid-knob-z)) rotateZ(45deg); }
 
-        .tm-lid-top, .tm-lid-side { position: absolute; display: block; box-sizing: border-box; backface-visibility: hidden; }
+        .tm-lid-top, .tm-lid-side { position: absolute; display: block; box-sizing: border-box; backface-visibility: hidden; transition: background 0.3s; }
         .tm-lid-top { inset: 0; transform: translateZ(var(--tier-half)); border: 1px solid rgba(182,198,185,0.48); box-shadow: inset 0 calc(var(--d-size) * 0.035) calc(var(--d-size) * 0.05) rgba(255,255,255,0.22), inset 0 calc(var(--d-size) * -0.05) calc(var(--d-size) * 0.07) rgba(0,0,0,0.58); }
         .tm-lid-side { background: linear-gradient(180deg, var(--trash-lid-wall-top, #555f58), var(--trash-lid-wall-bot, #171c18)); border: 1px solid rgba(0,0,0,0.52); }
         
@@ -505,11 +507,11 @@ window.BG3DiceAssets = (function() {
 
         /* 3D EKSENİNİ BOZAN FILTER KALDIRILDI VE PARLAMA RENGİ DEĞİŞKENE EKLENDİ */
         .tm-type-d6-trashcan > .tm-face-glow.face-d6 {
-            --trash-lid-hi: #b0bfb4;
-            --trash-lid-mid: #707b70;
-            --trash-lid-low: #3a423a;
-            --trash-lid-wall-top: #5a665e;
-            --trash-lid-wall-bot: #232924;
+            --trash-lid-hi: #cce0d2;
+            --trash-lid-mid: #8a968a;
+            --trash-lid-low: #546054;
+            --trash-lid-wall-top: #738278;
+            --trash-lid-wall-bot: #3a443b;
             border-color: var(--trash-glow) !important;
             box-shadow: 0 0 calc(var(--d-size) * 0.18) calc(var(--glow-int, 65) * 0.05px) var(--trash-glow), inset 0 0 calc(var(--d-size) * 0.14) rgba(140,220,150,0.28) !important;
         }
