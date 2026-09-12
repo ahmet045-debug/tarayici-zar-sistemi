@@ -27,7 +27,7 @@ window.ImmortalDiceAssets = (function() {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-weight: bold;
             backface-visibility: hidden;
-            transition: box-shadow 0.3s, background 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
             overflow: visible;
             background-size: cover;
             background-position: center;
@@ -36,19 +36,22 @@ window.ImmortalDiceAssets = (function() {
             transform-style: preserve-3d;
         }
 
-        .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); transition: border-color 0.3s, box-shadow 0.3s; }
+        .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* ====== D20 ve D4 İÇİN YEPYENİ KUSURSUZ ÇERÇEVE MATEMATİĞİ ====== */
+        /* ====== D20 ve D4 YENİ KUSURSUZ SVG ÇERÇEVE MATEMATİĞİ ====== */
         .face-d4, .face-d20 {
             top: var(--tri-offset-y) !important;
             left: 0;
-            background: var(--d20-edge-color, var(--ring-color)) !important; /* Dış çerçeve rengi */
-            border: none !important; /* Eski bozuk sınır kaldırıldı */
+            background: transparent !important;
+            border: none !important;
             box-shadow:
                 0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)),
                 0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)),
                 inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
+
+        .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
+        .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
 
         .tm-body-fill-layer {
             position: absolute; inset: 0;
@@ -60,16 +63,20 @@ window.ImmortalDiceAssets = (function() {
         }
         
         .face-d6 .tm-body-fill-layer { border-radius: 4%; }
-        
-        /* Üçgenin içini dolduran ve küçülerek çerçeve bırakan katman */
-        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            transform-origin: 50% 66.6666%;
-            transform: scale(var(--d20-edge-w, 0.92)); /* Çizgi kalınlığını ayarlayan sihirli değer */
-        }
+        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); border-radius: 0; }
 
-        .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
-        .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
+        /* Her kenardan dönen vektör üçgen çizgisi */
+        .tm-tri-border {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 15; pointer-events: none; overflow: visible;
+        }
+        .tm-tri-border polygon {
+            fill: none;
+            stroke: var(--d20-edge-color, #ff8a3d);
+            stroke-width: calc(var(--d20-edge-w, 8) * 2px);
+            vector-effect: non-scaling-stroke;
+            stroke-linejoin: round;
+        }
 
         .tm-inner-mass {
             position: absolute;
@@ -90,7 +97,6 @@ window.ImmortalDiceAssets = (function() {
         .tm-dice-content.inverted { transform: translate(-50%, -50%) rotateZ(180deg) !important; }
 
         .tm-face-glow { --glow-alpha: calc(var(--glow-int, 65) / 100); z-index: 100; }
-
         .tm-face-glow.face-d4, .tm-face-glow.face-d20 {
             box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
         }
@@ -138,30 +144,14 @@ window.ImmortalDiceAssets = (function() {
 
         /* ================= MODERN YENİDEN BOYUTLANDIRILABİLİR PANEL ================= */
         #tm-dice-menu {
-            position: fixed;
-            background: rgba(10, 14, 18, var(--panel-opac, 0.96));
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 230, 118, 0.12);
-            display: none;
-            flex-direction: column;
-            pointer-events: auto;
-            z-index: 999995;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: #f0f6fc;
-            box-sizing: border-box;
-            resize: horizontal;
-            min-width: 280px;
-            max-width: 550px;
-            overflow: hidden; 
+            position: fixed; background: rgba(10, 14, 18, var(--panel-opac, 0.96)); backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 12px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 230, 118, 0.12);
+            display: none; flex-direction: column; pointer-events: auto; z-index: 999995;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #f0f6fc; box-sizing: border-box;
+            resize: horizontal; min-width: 280px; max-width: 550px; overflow: hidden; 
         }
         
-        #tm-dice-menu::-webkit-resizer {
-            background-color: transparent;
-            background-image: radial-gradient(circle at 100% 100%, #00e676 10%, transparent 20%);
-            background-size: 8px 8px;
-        }
+        #tm-dice-menu::-webkit-resizer { background-color: transparent; background-image: radial-gradient(circle at 100% 100%, #00e676 10%, transparent 20%); background-size: 8px 8px; }
 
         #tm-menu-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0d1117; padding: 10px 14px; border-bottom: 1px solid rgba(0, 230, 118, 0.2); cursor: move; user-select: none; }
         #tm-menu-header-left { display: flex; align-items: center; gap: 10px; }
@@ -169,7 +159,7 @@ window.ImmortalDiceAssets = (function() {
         #tm-menu-drag-grip:hover { background: rgba(0, 230, 118, 0.15); }
         #tm-menu-drag-grip:active { cursor: grabbing; }
 
-        #tm-menu-drag-title { font-size: 13px; font-weight: 900; letter-spacing: 1px; color: #f0f6fc; text-shadow: 0 0 4px rgba(255,255,255,0.2); }
+        #tm-menu-drag-title { font-size: 13px; font-weight: 900; letter-spacing: 1px; color: #f0f6fc; text-shadow: 0 0 4px rgba(255,255,255,0.2); text-transform: uppercase; }
         #tm-menu-close-btn { font-size: 14px; font-weight: bold; color: #8b949e; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s; }
         #tm-menu-close-btn:hover { color: #ffffff; background: #e53935; }
 
@@ -466,8 +456,7 @@ window.ImmortalDiceAssets = (function() {
                             </optgroup>
                             <optgroup label="D20">
                                 <option value="D20_numbers">D20 Sayı</option>
-                            <option value="D20_dots">D20 Nokta</option>
-                                <option value="D20_skull">D20 Kurukafa</option>
+                                <option value="D20_artifact">D20 Artifact</option>
                             </optgroup>
                         </select>
                         <select class="tm-select" id="tm-mini-dice-theme-select" style="flex: 1;">
