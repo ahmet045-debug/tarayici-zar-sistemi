@@ -38,11 +38,11 @@ window.ImmortalDiceAssets = (function() {
 
         .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* ====== D20 ve D4 TERTEMİZ DÜZELTME ====== */
+        /* ====== D20 ve D4 TERTEMİZ DÜZELTME: ORİJİNAL RENKLER GERİ DÖNDÜ ====== */
         .face-d4, .face-d20 {
             top: var(--tri-offset-y) !important;
             left: 0;
-            background: transparent !important;
+            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%)) !important; /* Arka plan orijinaline döndü! */
             border: none !important;
             box-shadow:
                 0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)),
@@ -50,7 +50,6 @@ window.ImmortalDiceAssets = (function() {
                 inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
 
-        /* Tüm yüzeylerin içine yerleşen ana renk katmanı (Geri Döndü!) */
         .tm-body-fill-layer {
             position: absolute; inset: 0;
             overflow: hidden;
@@ -61,14 +60,8 @@ window.ImmortalDiceAssets = (function() {
         }
         
         .face-d6 .tm-body-fill-layer { border-radius: 4%; }
-        
-        /* D20 ve D4 için saf kesme maskesi (Siyah üçgenler silindi!) */
-        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            border-radius: 0;
-        }
 
-        /* YENİ: Kusursuz 3 Kenarlı SVG Çizgi Katmanı */
+        /* YENİ: Kusursuz 3 Kenarlı SVG Çizgi Katmanı (Arka planı ASLA bozmaz) */
         .tm-tri-border-layer {
             position: absolute;
             top: 0; left: 0;
@@ -81,7 +74,6 @@ window.ImmortalDiceAssets = (function() {
         .tm-tri-border-layer polygon {
             fill: none;
             stroke: var(--d20-edge-color, #ff8a3d);
-            /* stroke dışa taştığı için kalınlığı iki kat veriyoruz, clip-path yarısını yiyor ve kusursuz iç kenarlık oluyor */
             stroke-width: calc(var(--d20-edge-w, 4) * 2px); 
             vector-effect: non-scaling-stroke;
             stroke-linejoin: miter;
@@ -90,28 +82,14 @@ window.ImmortalDiceAssets = (function() {
         .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
         .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
 
-        .tm-inner-mass {
-            position: absolute;
-            width: calc(var(--d-size) * 0.98); height: calc(var(--d-size) * 0.98);
-            border-radius: 18%;
-            border: none !important; box-shadow: none !important;
-            top: 1%; left: 1%;
-            transform-style: preserve-3d;
-        }
+        .tm-inner-mass { position: absolute; width: calc(var(--d-size) * 0.98); height: calc(var(--d-size) * 0.98); border-radius: 18%; border: none !important; box-shadow: none !important; top: 1%; left: 1%; transform-style: preserve-3d; }
 
-        .tm-dice-content {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; z-index: 10;
-            transform-style: preserve-3d;
-        }
-
+        .tm-dice-content { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; transform-style: preserve-3d; }
         .face-d4 .tm-dice-content, .face-d20 .tm-dice-content { top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%); }
         .tm-dice-content.inverted { transform: translate(-50%, -50%) rotateZ(180deg) !important; }
 
         .tm-face-glow { --glow-alpha: calc(var(--glow-int, 65) / 100); z-index: 100; }
-        .tm-face-glow.face-d4, .tm-face-glow.face-d20 {
-            box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
-        }
+        .tm-face-glow.face-d4, .tm-face-glow.face-d20 { box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important; }
         .tm-face-glow:not(.face-d6) { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
 
         .tm-pips-container { display: grid; grid-template-areas: "a b c" "d e f" "g h i"; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); width: 100%; height: 100%; gap: 0; transform-style: preserve-3d; }
@@ -298,16 +276,6 @@ window.ImmortalDiceAssets = (function() {
         `;
     }
 
-    function getTriangleBorderSVG() {
-        return `
-        <div class="tm-tri-border-layer">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <polygon points="50,0 0,100 100,100" />
-            </svg>
-        </div>
-        `;
-    }
-
     function getMenuHTML() {
         return `
         <!-- MODERN SOL ÜST İÇ TUTAMAÇ VE BAŞLIK BİR ARADA -->
@@ -481,8 +449,6 @@ window.ImmortalDiceAssets = (function() {
                             </optgroup>
                             <optgroup label="D4">
                                 <option value="D4_numbers">D4 Sayı</option>
-                                <option value="D4_dots">D4 Nokta</option>
-                                <option value="D4_skull">D4 Kurukafa</option>
                             </optgroup>
                             <optgroup label="D20">
                                 <option value="D20_numbers">D20 Sayı</option>
