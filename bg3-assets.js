@@ -38,7 +38,7 @@ window.ImmortalDiceAssets = (function() {
 
         .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* ====== D20 ve D4 YENİ KUSURSUZ SVG ÇERÇEVE MATEMATİĞİ ====== */
+        /* ====== D20 ve D4 YÜZEY AYARLARI ====== */
         .face-d4, .face-d20 {
             top: var(--tri-offset-y) !important;
             left: 0;
@@ -50,9 +50,7 @@ window.ImmortalDiceAssets = (function() {
                 inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
 
-        .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
-        .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
-
+        /* Tüm yüzeylerin içine yerleşen ana renk katmanı */
         .tm-body-fill-layer {
             position: absolute; inset: 0;
             overflow: hidden;
@@ -63,20 +61,38 @@ window.ImmortalDiceAssets = (function() {
         }
         
         .face-d6 .tm-body-fill-layer { border-radius: 4%; }
-        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); border-radius: 0; }
-
-        /* Her kenardan dönen vektör üçgen çizgisi */
-        .tm-tri-border {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 15; pointer-events: none; overflow: visible;
+        
+        /* D20 ve D4 için üçgen maskeleme (sadece dış hatları keser, içeriği değil) */
+        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            border-radius: 0;
         }
-        .tm-tri-border polygon {
+
+        /* Çizgiler artık ayrı bir SVG katmanında! */
+        .tm-tri-border-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 5; /* Yazının altında, rengin üstünde */
+            pointer-events: none;
+        }
+        
+        .tm-tri-border-layer svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Çizginin rengini ve kalınlığını ayarladığımız yer */
+        .tm-tri-border-layer polygon {
             fill: none;
-            stroke: var(--d20-edge-color, #ff8a3d);
-            stroke-width: calc(var(--d20-edge-w, 8) * 2px);
-            vector-effect: non-scaling-stroke;
+            stroke: var(--d20-edge-color, var(--ring-color)); 
+            stroke-width: calc(var(--d20-edge-w, 8) * 0.5px); /* Menüden gelen değeri kullanır */
             stroke-linejoin: round;
         }
+
+        .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
+        .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
 
         .tm-inner-mass {
             position: absolute;
