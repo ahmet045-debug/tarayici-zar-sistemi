@@ -36,69 +36,60 @@ window.ImmortalDiceAssets = (function() {
             transform-style: preserve-3d;
         }
 
+        .tm-body-fill-layer {
+            position: absolute; inset: 0;
+            border-radius: 4%;
+            overflow: hidden;
+            z-index: 1;
+            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
+            transform-style: preserve-3d;
+        }
+
+        .tm-inner-mass {
+            position: absolute;
+            width: calc(var(--d-size) * 0.98); height: calc(var(--d-size) * 0.98);
+            border-radius: 18%;
+            border: none !important; box-shadow: none !important;
+            top: 1%; left: 1%;
+            transform-style: preserve-3d;
+        }
+
+        .tm-dice-content {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center; z-index: 10;
+            transform-style: preserve-3d;
+        }
+
+        .face-d4 .tm-dice-content, .face-d20 .tm-dice-content {
+            top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%);
+        }
+        .tm-dice-content.inverted {
+            transform: translate(-50%, -50%) rotateZ(180deg) !important;
+        }
+
         .face-d6 { width: var(--d-size); height: var(--d-size); border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* ====== D20 ve D4 TERTEMİZ DÜZELTME: ORİJİNAL RENKLER GERİ DÖNDÜ ====== */
+        /* ====== D20 ve D4: ORİJİNAL ARKA PLAN VE KUSURSUZ 3 KENAR ÇİZGİSİ ====== */
         .face-d4, .face-d20 {
             top: var(--tri-offset-y) !important;
             left: 0;
-            background: transparent !important;
-            border: none !important;
+            /* ESKİ MÜKEMMEL ARKA PLAN RENKLERİ GERİ GELDİ */
+            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%)) !important;
+            border: none !important; /* Bozuk kenarlık kaldırıldı */
             box-shadow:
                 0 0 calc(var(--d-size) * 0.12) var(--ring-glow, rgba(255,120,50,0.7)),
                 0 0 calc(var(--d-size) * 0.24) var(--ring-glow-soft, rgba(255,90,30,0.4)),
                 inset 0 0 calc(var(--d-size) * 0.10) rgba(0,0,0,0.6);
         }
 
-        /* Tüm yüzeylerin içine yerleşen ana renk (gradient) katmanı */
-        .tm-body-fill-layer {
-            position: absolute; inset: 0;
-            overflow: hidden;
-            z-index: 1;
-            background: var(--body-fill, linear-gradient(150deg, #2c2320 0%, #16110f 100%));
-            transform-style: preserve-3d;
-            transition: background 0.3s;
-        }
-        
-        .face-d6 .tm-body-fill-layer { border-radius: 4%; }
-        
-        /* D20 ve D4 için üçgen maskeleme (sadece dış hatları keser, renkleri bozmaz) */
-        .face-d4 .tm-body-fill-layer, .face-d20 .tm-body-fill-layer {
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            border-radius: 0;
-        }
-
-        /* YENİ: Kusursuz 3 Kenarlı SVG Çizgi Katmanı */
-        .tm-tri-border-svg {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 5;
-            pointer-events: none;
-            overflow: visible;
-        }
-        .tm-tri-border-svg polygon {
-            fill: none;
-            stroke: var(--d20-edge-color, #ff8a3d);
-            stroke-width: calc(var(--d20-edge-w, 4) * 1px); 
-            vector-effect: non-scaling-stroke;
-            stroke-linejoin: round;
-        }
-
         .face-d4 { width: var(--d-size); height: var(--d4-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.32); transform-origin: 50% 66.6666%; }
         .face-d20 { width: var(--d-size); height: var(--d20-h); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); font-size: calc(var(--d-size) * 0.30); transform-origin: 50% 66.6666%; }
 
-        .tm-inner-mass { position: absolute; width: calc(var(--d-size) * 0.98); height: calc(var(--d-size) * 0.98); border-radius: 18%; border: none !important; box-shadow: none !important; top: 1%; left: 1%; transform-style: preserve-3d; }
-
-        .tm-dice-content { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; transform-style: preserve-3d; }
-        .face-d4 .tm-dice-content, .face-d20 .tm-dice-content { top: 60%; left: 50%; width: auto; height: auto; transform: translate(-50%, -50%); }
-        .tm-dice-content.inverted { transform: translate(-50%, -50%) rotateZ(180deg) !important; }
-
         .tm-face-glow { --glow-alpha: calc(var(--glow-int, 65) / 100); z-index: 100; }
-        .tm-face-glow.face-d4, .tm-face-glow.face-d20 { box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important; }
-        
-        .tm-face-glow:not(.face-d6) .tm-body-fill-layer { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
-        .tm-face-glow:not(.face-d6) .tm-tri-border-svg polygon { filter: drop-shadow(0 0 6px var(--ring-glow)); }
+        .tm-face-glow.face-d4, .tm-face-glow.face-d20 {
+            box-shadow: 0 0 calc(var(--d-size) * 0.20) calc(var(--glow-int, 65) * 0.06px) var(--ring-glow, rgba(255,120,50,0.9)), 0 0 calc(var(--d-size) * 0.36) calc(var(--glow-int, 65) * 0.09px) var(--ring-glow-soft, rgba(255,90,30,0.55)), inset 0 0 calc(var(--d-size) * 0.12) rgba(0,0,0,0.5) !important;
+        }
+        .tm-face-glow:not(.face-d6) { filter: brightness(calc(1 + (var(--glow-alpha) * 0.4))); }
 
         .tm-pips-container { display: grid; grid-template-areas: "a b c" "d e f" "g h i"; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); width: 100%; height: 100%; gap: 0; transform-style: preserve-3d; }
         .tm-pip { border-radius: 50%; position: relative; background: radial-gradient(circle at 38% 30%, var(--pip-hi, #ffdca0) 0%, var(--pip-mid, #ff7a3d) 42%, var(--pip-dark, #7a1e06) 100%); box-shadow: inset -1px -1px 2px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.3); }
@@ -545,7 +536,7 @@ window.ImmortalDiceAssets = (function() {
 
     function getSkullSVG() { return `<div class="tm-skull-icon"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path class="skull-fill" d="M 50,15 C 20,15 15,35 15,55 C 15,70 25,75 30,85 L 70,85 C 75,75 85,70 85,55 C 85,35 80,15 50,15 Z"/><polygon class="skull-dark" points="25,45 45,55 35,68"/><polygon class="skull-dark" points="75,45 55,55 65,68"/><polygon class="skull-dark" points="50,65 46,75 54,75"/><path fill="rgba(0,0,0,0.85)" d="M 50,75 C 30,75 5,90 10,105 C 20,95 30,90 40,88 C 45,87 55,87 60,88 C 70,90 80,95 90,105 C 95,90 70,75 50,75 Z"/></svg></div>`; }
     function getHornedSkullSVG() { return `<div class="tm-skull-icon horned-skull"><svg viewBox="-30 -20 160 150" xmlns="http://www.w3.org/2000/svg"><path class="skull-fill" d="M 18,30 C -15,0 -35,30 -10,48 C -5,35 15,25 30,35 Z"/><path class="skull-fill" d="M 82,30 C 115,0 135,30 110,48 C 105,35 85,25 70,35 Z"/><path class="skull-fill" d="M 50,10 C 15,10 5,40 10,65 C 15,80 25,85 30,100 L 70,100 C 75,85 85,80 90,65 C 95,40 85,10 50,10 Z"/><path fill="rgba(0,0,0,0.3)" d="M 10,50 C 25,45 40,50 50,55 C 60,50 75,45 90,50 C 85,65 75,70 70,65 C 60,60 40,60 30,65 C 25,70 15,65 10,50 Z"/><polygon class="skull-dark" points="20,45 45,55 35,68"/><polygon class="skull-dark" points="80,45 55,55 65,68"/><polygon class="skull-dark" points="50,65 44,78 56,78"/><path fill="rgba(0,0,0,0.9)" d="M 50,80 C 20,80 -10,100 -15,125 C 5,105 25,100 40,95 C 45,93 55,93 60,95 C 75,100 95,105 115,125 C 110,100 80,80 50,80 Z"/></svg></div>`; }
-    function getArtifactSVG() { return `<svg viewBox="0 0 100 100" style="position:absolute; width:130%; height:130%; opacity:0.35; filter: drop-shadow(0 0 4px var(--num-glow)); animation: spin 20s linear infinite;"><circle cx="50" cy="50" r="45" fill="none" stroke="var(--num-color)" stroke-width="2" stroke-dasharray="4 8"/><circle cx="50" cy="50" r="38" fill="none" stroke="var(--num-color)" stroke-width="1"/><polygon points="50,15 80,75 20,75" fill="none" stroke="var(--num-color)" stroke-width="1" opacity="0.5"/><polygon points="50,85 80,25 20,25" fill="none" stroke="var(--num-color)" stroke-width="1" opacity="0.5"/></svg><style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>`; }
+    function getArtifactSVG() { return `<svg viewBox="0 0 100 100" style="position:absolute; width:130%; height:130%; top: -15%; left: -15%; opacity:0.35; filter: drop-shadow(0 0 4px var(--num-glow)); animation: spin 20s linear infinite;"><circle cx="50" cy="50" r="45" fill="none" stroke="var(--num-color)" stroke-width="2" stroke-dasharray="4 8"/><circle cx="50" cy="50" r="38" fill="none" stroke="var(--num-color)" stroke-width="1"/><polygon points="50,15 80,75 20,75" fill="none" stroke="var(--num-color)" stroke-width="1" opacity="0.5"/><polygon points="50,85 80,25 20,25" fill="none" stroke="var(--num-color)" stroke-width="1" opacity="0.5"/></svg><style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>`; }
 
     function getCornerPlateSVG(dir) {
         let points = ""; let edge = "";
@@ -554,16 +545,6 @@ window.ImmortalDiceAssets = (function() {
         else if (dir === 'bl') { points = "0,25 75,100 0,100"; edge = '<line x1="0" y1="25" x2="75" y2="100" class="plate-edge"/>'; }
         else if (dir === 'br') { points = "25,100 100,25 100,100"; edge = '<line x1="25" y1="100" x2="100" y2="25" class="plate-edge"/>'; }
         return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%; height:100%; display:block; overflow:visible;" xmlns="http://www.w3.org/2000/svg"><polygon points="${points}" class="plate-fill"/>${edge}</svg>`;
-    }
-    
-    function getTriangleBorderSVG() {
-        return `
-        <div class="tm-tri-border-svg">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <polygon points="50,0 0,100 100,100" />
-            </svg>
-        </div>
-        `;
     }
 
     function seededRandom(seed) { let x = Math.sin(seed) * 10000; return x - Math.floor(x); }
@@ -621,7 +602,6 @@ window.ImmortalDiceAssets = (function() {
         getHornedSkullSVG: getHornedSkullSVG,
         getArtifactSVG: getArtifactSVG,
         getCornerPlateSVG: getCornerPlateSVG,
-        getTriangleBorderSVG: getTriangleBorderSVG,
         getJaggedHolePath: getJaggedHolePath,
         getCompactPipsHTML: getCompactPipsHTML
     };
