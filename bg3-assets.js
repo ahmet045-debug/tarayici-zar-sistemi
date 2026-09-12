@@ -142,7 +142,7 @@ window.BG3DiceAssets = (function() {
         .tm-face-glow .tm-corner-plate .plate-fill { fill: var(--ring-color, #8a5a3a) !important; }
         .tm-face-glow .tm-skull-icon svg .skull-fill { fill: #ffffff !important; }
 
-        /* ================= YENİ MODERN PANEL TASARIMI ================= */
+        /* ================= YENİ SEKME (TAB) TABANLI MODERN PANEL ================= */
         #tm-dice-menu {
             position: fixed;
             background: rgba(10, 14, 18, var(--panel-opac, 0.96));
@@ -151,8 +151,8 @@ window.BG3DiceAssets = (function() {
             border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 230, 118, 0.12);
             display: none;
-            flex-direction: row; /* Sol bar ve sağ içerik için */
-            width: var(--panel-w, 310px);
+            flex-direction: column;
+            width: var(--panel-w, 340px);
             pointer-events: auto;
             z-index: 999995;
             overflow: hidden;
@@ -161,133 +161,121 @@ window.BG3DiceAssets = (function() {
             box-sizing: border-box;
         }
 
-        /* SOL TUTAMAÇ (DRAG HANDLE) */
-        #tm-menu-drag-handle {
-            position: relative;
-            width: 24px;
-            flex-shrink: 0;
-            background: linear-gradient(to right, #080b0f, #161c23);
-            border-right: 1px solid rgba(0, 230, 118, 0.2);
-            cursor: grab;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 20;
-        }
-        #tm-menu-drag-handle:active { cursor: grabbing; }
-        #tm-menu-drag-handle::after {
-            content: '';
-            width: 4px;
-            height: 60px;
-            border-left: 2px dotted rgba(255,255,255,0.2);
-            border-right: 2px dotted rgba(255,255,255,0.2);
-            transition: all 0.2s;
-        }
-        #tm-menu-drag-handle:hover::after {
-            border-color: #00e676;
-            box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
-        }
-
-        .tm-menu-content-wrap {
-            flex: 1;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
         #tm-menu-header-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            background: #0d1117;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+            cursor: move;
+            user-select: none;
         }
-        #tm-menu-drag-title { font-size: 13px; font-weight: 900; letter-spacing: 1px; color: #00e676; text-shadow: 0 0 8px rgba(0, 230, 118, 0.4); }
+        
+        /* SOL ÜST İÇ TUTAMAÇ */
+        #tm-menu-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #tm-menu-drag-grip {
+            font-size: 16px;
+            color: #00e676;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        #tm-menu-drag-grip:hover { background: rgba(0, 230, 118, 0.15); }
+        #tm-menu-drag-grip:active { cursor: grabbing; }
+
+        #tm-menu-drag-title { font-size: 13px; font-weight: 900; letter-spacing: 1px; color: #f0f6fc; text-shadow: 0 0 4px rgba(255,255,255,0.2); }
+        
         #tm-menu-close-btn {
-            font-size: 14px; font-weight: bold; color: #8b949e; cursor: pointer; width: 22px; height: 22px;
+            font-size: 14px; font-weight: bold; color: #8b949e; cursor: pointer; width: 24px; height: 24px;
             display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s;
         }
         #tm-menu-close-btn:hover { color: #ffffff; background: #e53935; }
 
-        .tm-menu-body {
-            display: flex; flex-direction: column; gap: 8px;
-            max-height: 75vh; overflow-y: auto; overflow-x: hidden;
-            padding-right: 4px;
+        /* YENİ ŞERİT (TAB) MENÜSÜ */
+        #tm-tabs-bar {
+            display: flex;
+            background: #161c23;
+            border-bottom: 2px solid #21262d;
         }
-        .tm-menu-body::-webkit-scrollbar { width: 4px; }
+        .tm-tab-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 10px;
+            font-weight: 800;
+            color: #8b949e;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px; /* Çizginin üstüne binmesi için */
+            transition: all 0.2s;
+            user-select: none;
+            letter-spacing: 0.5px;
+        }
+        .tm-tab-btn:hover { color: #c9d1d9; background: rgba(255,255,255,0.03); }
+        .tm-tab-btn.active { color: #00e676; border-bottom-color: #00e676; background: rgba(0, 230, 118, 0.05); }
+
+        .tm-menu-body {
+            display: flex; flex-direction: column;
+            max-height: 75vh; overflow-y: auto; overflow-x: hidden;
+            padding: 14px;
+            background: rgba(10, 14, 18, 0.5);
+        }
+        .tm-menu-body::-webkit-scrollbar { width: 5px; }
         .tm-menu-body::-webkit-scrollbar-track { background: transparent; }
         .tm-menu-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
         .tm-menu-body:hover::-webkit-scrollbar-thumb { background: #00e676; }
 
-        /* AKORDİYON TASARIMI (SEKMELER) */
-        .tm-accordion {
-            background: #12171e;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .tm-accordion[open] { border-color: rgba(0, 230, 118, 0.4); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
-        
-        .tm-accordion summary {
-            padding: 10px 12px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            color: #f0f6fc;
-            background: #161c23;
-            cursor: pointer;
-            user-select: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s;
-            list-style: none; /* Standart oku gizle */
-        }
-        .tm-accordion summary::-webkit-details-marker { display: none; }
-        .tm-accordion summary:hover { background: #1f2937; color: #00e676; }
-        
-        .tm-accordion summary::after { content: '+'; font-size: 14px; font-weight: bold; color: #8b949e; transition: transform 0.3s; }
-        .tm-accordion[open] summary::after { content: '−'; color: #00e676; }
-        .tm-accordion[open] summary { border-bottom: 1px solid rgba(0, 230, 118, 0.2); color: #00e676; }
+        /* SEKME İÇERİKLERİ (TABS) */
+        .tm-tab-content { display: none; flex-direction: column; gap: 12px; }
+        .tm-tab-content.active { display: flex; animation: tmFadeIn 0.2s ease-in-out; }
+        @keyframes tmFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        .tm-acc-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; background: rgba(13, 17, 23, 0.5); }
-
+        .tm-menu-section { display: flex; flex-direction: column; gap: 6px; }
         .tm-sec-title { color: #8b949e; font-size: 9px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 2px; }
 
-        .tm-menu-btn {
-            background: #161c23; border: 1px solid #30363d; color: #f0f6fc; padding: 7px 10px;
-            cursor: pointer; font-weight: 700; font-size: 11px; border-radius: 6px; text-align: center;
+        .tm-menu-btn-action {
+            background: #161c23; border: 1px solid #30363d; color: #f0f6fc; padding: 8px 12px;
+            cursor: pointer; font-weight: 700; font-size: 12px; border-radius: 6px; text-align: center;
             transition: all 0.18s ease-in-out; display: flex; justify-content: center; align-items: center; user-select: none;
         }
-        .tm-menu-btn:hover { background: #1f2937; border-color: #00e676; color: #00e676; box-shadow: 0 0 8px rgba(0, 230, 118, 0.2); }
+        .tm-menu-btn-action:hover { background: #1f2937; border-color: #00e676; color: #00e676; box-shadow: 0 0 8px rgba(0, 230, 118, 0.2); }
 
         .tm-select {
-            width: 100%; background: #161c23; color: #f0f6fc; border: 1px solid #30363d; padding: 6px 8px;
-            border-radius: 6px; font-family: inherit; font-size: 11px; font-weight: 600; outline: none; cursor: pointer;
+            width: 100%; background: #0d1117; color: #f0f6fc; border: 1px solid #30363d; padding: 8px;
+            border-radius: 6px; font-family: inherit; font-size: 12px; font-weight: 600; outline: none; cursor: pointer;
             box-sizing: border-box; transition: border-color 0.2s;
         }
         .tm-select:hover, .tm-select:focus { border-color: #00e676; }
         .tm-select optgroup { font-style: italic; font-weight: 600; color: #00e676; background: #0d1117; }
         .tm-select optgroup option { font-style: normal; color: #f0f6fc; background: #161c23; }
 
-        .tm-slider { -webkit-appearance: none; width: 100%; height: 4px; background: #21262d; outline: none; border-radius: 2px; margin: 0; }
+        /* YENİ KALIN VE RAHAT SLIDER TASARIMI */
+        .tm-slider { -webkit-appearance: none; width: 100%; height: 8px; background: #161c23; outline: none; border-radius: 4px; border: 1px solid #30363d; margin: 0; }
         .tm-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%;
-            background: #00e676; cursor: pointer; box-shadow: 0 0 8px rgba(0, 230, 118, 0.6); transition: transform 0.1s, background 0.1s;
+            -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%;
+            background: #00e676; cursor: pointer; box-shadow: 0 0 6px rgba(0, 230, 118, 0.6); transition: transform 0.1s, background 0.1s;
         }
-        .tm-slider::-webkit-slider-thumb:hover { transform: scale(1.15); background: #ffffff; }
+        .tm-slider::-webkit-slider-thumb:hover { transform: scale(1.2); background: #ffffff; box-shadow: 0 0 10px rgba(0, 230, 118, 0.9); }
 
-        .tm-val-label { color: #00e676; font-size: 10px; min-width: 32px; text-align: right; font-weight: 800; display: inline-block; background: #161c23; padding: 2px 5px; border-radius: 4px; border: 1px solid #30363d; }
+        .tm-val-label { color: #00e676; font-size: 11px; min-width: 36px; text-align: center; font-weight: 800; display: inline-block; background: #161c23; padding: 4px 6px; border-radius: 4px; border: 1px solid #30363d; }
 
-        #tm-save-btn { background: #00e676; border-color: #00e676; color: #0c1015; font-weight: 800; }
+        #tm-save-btn { background: #00e676; border-color: #00e676; color: #0c1015; font-weight: 800; font-size: 13px; padding: 10px; }
         #tm-save-btn:hover { background: #ffffff; border-color: #ffffff; color: #000000; box-shadow: 0 0 14px rgba(0, 230, 118, 0.5); }
 
-        #tm-presets-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; justify-content: center; }
-        .tm-preset-item { display: flex; align-items: center; background: #161c23; border: 1px solid #30363d; border-radius: 6px; color: #f0f6fc; width: 32px; height: 32px; position: relative; }
-        .tm-preset-name { cursor: pointer; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
+        #tm-presets-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; }
+        .tm-preset-item { display: flex; align-items: center; background: #161c23; border: 1px solid #30363d; border-radius: 6px; color: #f0f6fc; width: 36px; height: 36px; position: relative; }
+        .tm-preset-name { cursor: pointer; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
         .tm-preset-name:hover { color: #00e676; background: #21262d; border-radius: 6px; }
-        .tm-preset-del { position: absolute; top: -4px; right: -4px; background: #e53935; color: #fff; font-size: 9px; font-weight: bold; width: 13px; height: 13px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; border: 1px solid #0d1117; }
+        .tm-preset-del { position: absolute; top: -5px; right: -5px; background: #e53935; color: #fff; font-size: 10px; font-weight: bold; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; border: 1px solid #0d1117; }
 
         #tm-custom-dialog {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 18, 0.96); backdrop-filter: blur(8px);
@@ -372,240 +360,238 @@ window.BG3DiceAssets = (function() {
 
     function getMenuHTML() {
         return `
-        <!-- MODERN SOL SÜRÜKLEME ÇUBUĞU -->
-        <div id="tm-menu-drag-handle" title="Paneli Kaydır"></div>
-
-        <div class="tm-menu-content-wrap">
-            <div id="tm-menu-header-bar">
+        <!-- MODERN SOL ÜST İÇ TUTAMAÇ VE BAŞLIK BİR ARADA -->
+        <div id="tm-menu-header-bar">
+            <div id="tm-menu-header-left">
+                <span id="tm-menu-drag-grip" title="Paneli Kaydır">⠿</span>
                 <span id="tm-menu-drag-title">⚡ BG3 DICE CONTROL</span>
-                <span id="tm-menu-close-btn" title="Paneli Kapat">✕</span>
+            </div>
+            <span id="tm-menu-close-btn" title="Paneli Kapat">✕</span>
+        </div>
+
+        <!-- ÜST ŞERİT (SEKMELER) -->
+        <div id="tm-tabs-bar">
+            <div class="tm-tab-btn active" data-target="tab-temel">TEMEL</div>
+            <div class="tm-tab-btn" data-target="tab-gorsel">GÖRSEL</div>
+            <div class="tm-tab-btn" data-target="tab-kova">KOVA</div>
+            <div class="tm-tab-btn" data-target="tab-sistem">SİSTEM</div>
+        </div>
+
+        <div class="tm-menu-body">
+
+            <!-- 1. SEKME: TEMEL AYARLAR -->
+            <div id="tab-temel" class="tm-tab-content active">
+                <div class="tm-menu-section">
+                    <span class="tm-sec-title">Zar Türü</span>
+                    <select class="tm-select" id="tm-shape-select">
+                        <option value="D6">D6 - Küp Zar</option>
+                        <option value="D4">D4 - Piramit Zar</option>
+                        <option value="D20">D20 - Kritik Zar</option>
+                    </select>
+                </div>
+                <div class="tm-menu-section">
+                    <span class="tm-sec-title">Yüz Stili</span>
+                    <select class="tm-select" id="tm-face-style-select">
+                        <option value="skull">Kurukafa Nokta</option>
+                    </select>
+                </div>
+                <div class="tm-menu-section tm-theme-section">
+                    <span class="tm-sec-title">Ana Zar Renk Teması</span>
+                    <select class="tm-select" id="tm-theme-select">
+                        <option value="lava">🔥 Reçine Lav</option>
+                        <option value="bonelegend">🔶 Kadim Efsane</option>
+                        <option value="void">🟣 Hiçlik (Karanlık Mor)</option>
+                        <option value="obsidian">⚫ Obsidyen</option>
+                        <option value="toxic">☣️ Toksik Asit</option>
+                        <option value="blood">🩸 Kan Büyüsü</option>
+                        <option value="celestial">✨ Kutsal Işık</option>
+                    </select>
+                </div>
+                <div class="tm-menu-section">
+                    <span class="tm-sec-title">Zar Boyutu</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="range" class="tm-slider" id="tm-size-slider" min="20" max="150" value="50" step="1" style="flex: 1;">
+                        <span id="tm-size-val" class="tm-val-label">50px</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="tm-menu-body">
-
-                <!-- 1. SEKME: TEMEL AYARLAR -->
-                <details class="tm-accordion" open>
-                    <summary>TEMEL AYARLAR</summary>
-                    <div class="tm-acc-body">
-                        <div class="tm-menu-section">
-                            <span class="tm-sec-title">Zar Türü</span>
-                            <select class="tm-select" id="tm-shape-select">
-                                <option value="D6">D6 - Küp Zar</option>
-                                <option value="D4">D4 - Piramit Zar</option>
-                                <option value="D20">D20 - Kritik Zar</option>
-                            </select>
-                        </div>
-                        <div class="tm-menu-section">
-                            <span class="tm-sec-title">Yüz Stili</span>
-                            <select class="tm-select" id="tm-face-style-select">
-                                <option value="skull">Kurukafa Nokta</option>
-                            </select>
-                        </div>
-                        <div class="tm-menu-section tm-theme-section">
-                            <span class="tm-sec-title">Ana Zar Renk Teması</span>
-                            <select class="tm-select" id="tm-theme-select">
-                                <option value="lava">🔥 Reçine Lav</option>
-                                <option value="bonelegend">🔶 Kadim Efsane</option>
-                                <option value="void">🟣 Hiçlik (Karanlık Mor)</option>
-                                <option value="obsidian">⚫ Obsidyen</option>
-                                <option value="toxic">☣️ Toksik Asit</option>
-                                <option value="blood">🩸 Kan Büyüsü</option>
-                                <option value="celestial">✨ Kutsal Işık</option>
-                            </select>
-                        </div>
-                        <div class="tm-menu-section">
-                            <span class="tm-sec-title">Zar Boyutu</span>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="range" class="tm-slider" id="tm-size-slider" min="20" max="150" value="50" step="1" style="flex: 1;">
-                                <span id="tm-size-val" class="tm-val-label">50px</span>
-                            </div>
-                        </div>
+            <!-- 2. SEKME: GÖRSEL DETAYLAR -->
+            <div id="tab-gorsel" class="tm-tab-content">
+                <div class="tm-skel-settings" style="display:flex; flex-direction:column; gap:8px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Pip Boyut</span>
+                        <input type="range" class="tm-slider" id="tm-pip-scale-slider" min="50" max="350" value="220" step="5" style="flex: 1;">
+                        <span id="tm-pip-scale-val" class="tm-val-label">220</span>
                     </div>
-                </details>
-
-                <!-- 2. SEKME: GÖRSEL DETAYLAR -->
-                <details class="tm-accordion tm-skel-settings">
-                    <summary>GÖRSEL DETAYLAR</summary>
-                    <div class="tm-acc-body">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Pip Boyutu</span>
-                            <input type="range" class="tm-slider" id="tm-pip-scale-slider" min="50" max="350" value="220" step="5" style="flex: 1;">
-                            <span id="tm-pip-scale-val" class="tm-val-label">220</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Pip Yayılımı</span>
-                            <input type="range" class="tm-slider" id="tm-pip-spread-slider" min="40" max="100" value="90" step="1" style="flex: 1;">
-                            <span id="tm-pip-spread-val" class="tm-val-label">90</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Zırh Yeri</span>
-                            <input type="range" class="tm-slider" id="tm-plate-offset-slider" min="-15" max="25" value="0" step="1" style="flex: 1;">
-                            <span id="tm-plate-offset-val" class="tm-val-label">0</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Zırh Derinliği</span>
-                            <input type="range" class="tm-slider" id="tm-plate-depth-slider" min="-20" max="50" value="1" step="1" style="flex: 1;">
-                            <span id="tm-plate-depth-val" class="tm-val-label">1</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Zırhlar</span>
-                            <div class="tm-menu-btn" id="tm-plates-toggle-btn" style="flex: 1;">Açık</div>
-                        </div>
-                        <div class="tm-slot-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Yarık Boyutu</span>
-                            <input type="range" class="tm-slider" id="tm-slot-scale-slider" min="50" max="350" value="220" step="5" style="flex: 1;">
-                            <span id="tm-slot-scale-val" class="tm-val-label">220</span>
-                        </div>
-                        <div class="tm-slot-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Yarık Yayılım</span>
-                            <input type="range" class="tm-slider" id="tm-slot-spread-slider" min="40" max="100" value="90" step="1" style="flex: 1;">
-                            <span id="tm-slot-spread-val" class="tm-val-label">90</span>
-                        </div>
-                        <div class="tm-lid-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Kapak Gen.</span>
-                            <input type="range" class="tm-slider" id="tm-lid-width-slider" min="40" max="200" value="100" step="5" style="flex: 1;">
-                            <span id="tm-lid-width-val" class="tm-val-label">100</span>
-                        </div>
-                        <div class="tm-lid-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Kapak Yüks.</span>
-                            <input type="range" class="tm-slider" id="tm-lid-height-slider" min="40" max="200" value="100" step="5" style="flex: 1;">
-                            <span id="tm-lid-height-val" class="tm-val-label">100</span>
-                        </div>
-                        <div class="tm-lid-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Kapak Kalın</span>
-                            <input type="range" class="tm-slider" id="tm-lid-depth-slider" min="0" max="250" value="100" step="5" style="flex: 1;">
-                            <span id="tm-lid-depth-val" class="tm-val-label">100</span>
-                        </div>
-                        <div class="tm-edge-shadow-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Kenar Kalın</span>
-                            <input type="range" class="tm-slider" id="tm-edge-width-slider" min="0" max="200" value="100" step="5" style="flex: 1;">
-                            <span id="tm-edge-width-val" class="tm-val-label">100</span>
-                        </div>
-                        <div class="tm-edge-shadow-row" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Kenar Blur</span>
-                            <input type="range" class="tm-slider" id="tm-edge-blur-slider" min="0" max="100" value="30" step="5" style="flex: 1;">
-                            <span id="tm-edge-blur-val" class="tm-val-label">30</span>
-                        </div>
-
-                        <div class="tm-menu-section" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #30363d;">
-                            <span class="tm-sec-title">Glow Parlaması (FRP Target)</span>
-                            <select class="tm-select" id="tm-glow-target" style="margin-bottom: 4px;">
-                                <option value="top">Tepedeki Yüzeyi Seç</option>
-                                <option value="front">Ekrana Bakan Yüzeyi Seç</option>
-                            </select>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="range" class="tm-slider" id="tm-glow-slider" min="0" max="100" value="65" step="1" style="flex: 1;">
-                                <span id="tm-glow-val" class="tm-val-label">65</span>
-                            </div>
-                        </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Yayılım</span>
+                        <input type="range" class="tm-slider" id="tm-pip-spread-slider" min="40" max="100" value="90" step="1" style="flex: 1;">
+                        <span id="tm-pip-spread-val" class="tm-val-label">90</span>
                     </div>
-                </details>
-
-                <!-- 3. SEKME: KOVA ZARLARI -->
-                <details class="tm-accordion tm-mini-dice-row">
-                    <summary>KOVA İÇİ ZARLAR</summary>
-                    <div class="tm-acc-body">
-                        <span class="tm-sec-title">Kovaya Özel Renkli Zar Ekle</span>
-                        <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <div style="display: flex; gap: 6px;">
-                                <select class="tm-select" id="tm-mini-dice-add-select" style="flex: 1.2;">
-                                    <optgroup label="D6">
-                                        <option value="D6_dots">D6 Düz Nokta</option>
-                                        <option value="D6_numbers">D6 Sayı</option>
-                                        <option value="D6_skull">D6 Kurukafa</option>
-                                        <option value="D6_aetherglass">D6 Aether</option>
-                                    </optgroup>
-                                    <optgroup label="D4">
-                                        <option value="D4_numbers">D4 Sayı</option>
-                                        <option value="D4_dots">D4 Nokta</option>
-                                        <option value="D4_skull">D4 Kurukafa</option>
-                                    </optgroup>
-                                    <optgroup label="D20">
-                                        <option value="D20_numbers">D20 Sayı</option>
-                                        <option value="D20_dots">D20 Nokta</option>
-                                        <option value="D20_skull">D20 Kurukafa</option>
-                                    </optgroup>
-                                </select>
-                                <select class="tm-select" id="tm-mini-dice-theme-select" style="flex: 1;">
-                                    <option value="lava">🔥 Lav</option>
-                                    <option value="bonelegend">🔶 Kadim</option>
-                                    <option value="void">🟣 Hiçlik</option>
-                                    <option value="obsidian">⚫ Obsidyen</option>
-                                    <option value="toxic">☣️ Toksik</option>
-                                    <option value="blood">🩸 Kan</option>
-                                    <option value="celestial">✨ Işık</option>
-                                </select>
-                                <div class="tm-menu-btn" id="tm-mini-dice-add-btn" style="flex: 0 0 32px; background:#00e676; color:#0c1015; font-size:16px;">+</div>
-                            </div>
-
-                            <div id="tm-mini-dice-list" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; background: #0c1015; border: 1px inset #21262d; border-radius: 6px; min-height: 28px;"></div>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">İç Zar Boyutu</span>
-                            <input type="range" class="tm-slider" id="tm-mini-dice-scale-slider" min="5" max="40" value="16" step="1" style="flex: 1;">
-                            <span id="tm-mini-dice-scale-val" class="tm-val-label">16</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Hız (Velocity)</span>
-                            <input type="range" class="tm-slider" id="tm-mini-dice-speed-slider" min="50" max="320" value="190" step="5" style="flex: 1;">
-                            <span id="tm-mini-dice-speed-val" class="tm-val-label">190</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Sekme Oranı</span>
-                            <input type="range" class="tm-slider" id="tm-mini-dice-bounce-slider" min="25" max="98" value="82" step="1" style="flex: 1;">
-                            <span id="tm-mini-dice-bounce-val" class="tm-val-label">82</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 10px; width: 55px; color:#8b949e;">Sürtünme</span>
-                            <input type="range" class="tm-slider" id="tm-mini-dice-friction-slider" min="0" max="75" value="24" step="1" style="flex: 1;">
-                            <span id="tm-mini-dice-friction-val" class="tm-val-label">24</span>
-                        </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Zırh Yeri</span>
+                        <input type="range" class="tm-slider" id="tm-plate-offset-slider" min="-15" max="25" value="0" step="1" style="flex: 1;">
+                        <span id="tm-plate-offset-val" class="tm-val-label">0</span>
                     </div>
-                </details>
-
-                <!-- 4. SEKME: SİSTEM VE KAYIT -->
-                <details class="tm-accordion">
-                    <summary>SİSTEM & KAYITLAR</summary>
-                    <div class="tm-acc-body">
-                        <div class="tm-menu-section">
-                            <span class="tm-sec-title">Zemin Düşme Limiti</span>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="range" class="tm-slider" id="tm-ground-slider" min="10" max="100" value="100" step="1" style="flex: 1;">
-                                <span id="tm-ground-val" class="tm-val-label">%100</span>
-                            </div>
-                        </div>
-
-                        <div class="tm-menu-section" style="margin-top: 4px;">
-                            <span class="tm-sec-title" style="color:#00e676;">Panel Görünümü</span>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 10px; width: 50px; color:#8b949e;">Genişlik</span>
-                                <input type="range" class="tm-slider" id="tm-panel-width-slider" min="260" max="450" value="310" step="5" style="flex: 1;">
-                                <span id="tm-panel-width-val" class="tm-val-label">310px</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-                                <span style="font-size: 10px; width: 50px; color:#8b949e;">Opaklık</span>
-                                <input type="range" class="tm-slider" id="tm-panel-opacity-slider" min="50" max="100" value="96" step="1" style="flex: 1;">
-                                <span id="tm-panel-opacity-val" class="tm-val-label">%96</span>
-                            </div>
-                        </div>
-
-                        <div class="tm-menu-section" style="margin-top: 4px;">
-                            <div class="tm-menu-btn" id="tm-toggle-visibility-btn">👁️ Zarı Gizle</div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-                                <span style="font-size: 10px; color:#8b949e; width: 45px;">Kısayol</span>
-                                <div class="tm-select" id="tm-hotkey-display" style="flex: 1; text-align: center; cursor: pointer;">Alt+Shift+D</div>
-                            </div>
-                        </div>
-
-                        <div class="tm-menu-section" style="margin-top: 8px;">
-                            <div class="tm-menu-btn" id="tm-save-btn">💾 Profil Olarak Kaydet</div>
-                            <div id="tm-presets-list" style="margin-top: 6px;"></div>
-                        </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Zırh Derin</span>
+                        <input type="range" class="tm-slider" id="tm-plate-depth-slider" min="-20" max="50" value="1" step="1" style="flex: 1;">
+                        <span id="tm-plate-depth-val" class="tm-val-label">1</span>
                     </div>
-                </details>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Zırhlar</span>
+                        <div class="tm-menu-btn-action" id="tm-plates-toggle-btn" style="flex: 1; padding: 4px;">Açık</div>
+                    </div>
+                    
+                    <div class="tm-slot-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Yarık Boyutu</span>
+                        <input type="range" class="tm-slider" id="tm-slot-scale-slider" min="50" max="350" value="220" step="5" style="flex: 1;">
+                        <span id="tm-slot-scale-val" class="tm-val-label">220</span>
+                    </div>
+                    <div class="tm-slot-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Yarık Yayılım</span>
+                        <input type="range" class="tm-slider" id="tm-slot-spread-slider" min="40" max="100" value="90" step="1" style="flex: 1;">
+                        <span id="tm-slot-spread-val" class="tm-val-label">90</span>
+                    </div>
+                    <div class="tm-lid-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Kapak Gen.</span>
+                        <input type="range" class="tm-slider" id="tm-lid-width-slider" min="40" max="200" value="100" step="5" style="flex: 1;">
+                        <span id="tm-lid-width-val" class="tm-val-label">100</span>
+                    </div>
+                    <div class="tm-lid-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Kapak Yüks.</span>
+                        <input type="range" class="tm-slider" id="tm-lid-height-slider" min="40" max="200" value="100" step="5" style="flex: 1;">
+                        <span id="tm-lid-height-val" class="tm-val-label">100</span>
+                    </div>
+                    <div class="tm-lid-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Kapak Kalın</span>
+                        <input type="range" class="tm-slider" id="tm-lid-depth-slider" min="0" max="250" value="100" step="5" style="flex: 1;">
+                        <span id="tm-lid-depth-val" class="tm-val-label">100</span>
+                    </div>
+                    <div class="tm-edge-shadow-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Kenar Kalın</span>
+                        <input type="range" class="tm-slider" id="tm-edge-width-slider" min="0" max="200" value="100" step="5" style="flex: 1;">
+                        <span id="tm-edge-width-val" class="tm-val-label">100</span>
+                    </div>
+                    <div class="tm-edge-shadow-row" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; width: 65px; color:#8b949e;">Kenar Blur</span>
+                        <input type="range" class="tm-slider" id="tm-edge-blur-slider" min="0" max="100" value="30" step="5" style="flex: 1;">
+                        <span id="tm-edge-blur-val" class="tm-val-label">30</span>
+                    </div>
+                </div>
 
+                <div class="tm-menu-section" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #30363d;">
+                    <span class="tm-sec-title">Glow Parlaması (FRP Target)</span>
+                    <select class="tm-select" id="tm-glow-target" style="margin-bottom: 8px;">
+                        <option value="top">Tepedeki Yüzeyi Seç</option>
+                        <option value="front">Ekrana Bakan Yüzeyi Seç</option>
+                    </select>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="range" class="tm-slider" id="tm-glow-slider" min="0" max="100" value="65" step="1" style="flex: 1;">
+                        <span id="tm-glow-val" class="tm-val-label">65</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- 3. SEKME: KOVA ZARLARI -->
+            <div id="tab-kova" class="tm-tab-content tm-mini-dice-row">
+                <span class="tm-sec-title">Kovaya Özel Renkli Zar Ekle</span>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; gap: 6px;">
+                        <select class="tm-select" id="tm-mini-dice-add-select" style="flex: 1.2;">
+                            <optgroup label="D6">
+                                <option value="D6_dots">D6 Düz Nokta</option>
+                                <option value="D6_numbers">D6 Sayı</option>
+                                <option value="D6_skull">D6 Kurukafa</option>
+                                <option value="D6_aetherglass">D6 Aether</option>
+                            </optgroup>
+                            <optgroup label="D4">
+                                <option value="D4_numbers">D4 Sayı</option>
+                                <option value="D4_dots">D4 Nokta</option>
+                                <option value="D4_skull">D4 Kurukafa</option>
+                            </optgroup>
+                            <optgroup label="D20">
+                                <option value="D20_numbers">D20 Sayı</option>
+                                <option value="D20_dots">D20 Nokta</option>
+                                <option value="D20_skull">D20 Kurukafa</option>
+                            </optgroup>
+                        </select>
+                        <select class="tm-select" id="tm-mini-dice-theme-select" style="flex: 1;">
+                            <option value="lava">🔥 Lav</option>
+                            <option value="bonelegend">🔶 Kadim</option>
+                            <option value="void">🟣 Hiçlik</option>
+                            <option value="obsidian">⚫ Obsidyen</option>
+                            <option value="toxic">☣️ Toksik</option>
+                            <option value="blood">🩸 Kan</option>
+                            <option value="celestial">✨ Işık</option>
+                        </select>
+                        <div class="tm-menu-btn-action" id="tm-mini-dice-add-btn" style="flex: 0 0 36px; background:#00e676; color:#0c1015; font-size:18px;">+</div>
+                    </div>
+
+                    <div id="tm-mini-dice-list" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(13, 17, 23, 0.5); border: 1px solid #30363d; border-radius: 8px; min-height: 40px;"></div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+                    <span style="font-size: 11px; width: 65px; color:#8b949e;">İç Zar Boyu</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-scale-slider" min="5" max="40" value="16" step="1" style="flex: 1;">
+                    <span id="tm-mini-dice-scale-val" class="tm-val-label">16</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; width: 65px; color:#8b949e;">Hız (Velocity)</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-speed-slider" min="50" max="320" value="190" step="5" style="flex: 1;">
+                    <span id="tm-mini-dice-speed-val" class="tm-val-label">190</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; width: 65px; color:#8b949e;">Sekme Oranı</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-bounce-slider" min="25" max="98" value="82" step="1" style="flex: 1;">
+                    <span id="tm-mini-dice-bounce-val" class="tm-val-label">82</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; width: 65px; color:#8b949e;">Sürtünme</span>
+                    <input type="range" class="tm-slider" id="tm-mini-dice-friction-slider" min="0" max="75" value="24" step="1" style="flex: 1;">
+                    <span id="tm-mini-dice-friction-val" class="tm-val-label">24</span>
+                </div>
+            </div>
+
+            <!-- 4. SEKME: SİSTEM & KAYIT -->
+            <div id="tab-sistem" class="tm-tab-content">
+                <div class="tm-menu-section">
+                    <span class="tm-sec-title">Zemin Düşme Limiti</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="range" class="tm-slider" id="tm-ground-slider" min="10" max="100" value="100" step="1" style="flex: 1;">
+                        <span id="tm-ground-val" class="tm-val-label">%100</span>
+                    </div>
+                </div>
+
+                <div class="tm-menu-section" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #30363d;">
+                    <span class="tm-sec-title" style="color:#00e676;">Panel Görünümü Ayarları</span>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+                        <span style="font-size: 11px; width: 60px; color:#8b949e;">Genişlik</span>
+                        <input type="range" class="tm-slider" id="tm-panel-width-slider" min="260" max="450" value="340" step="5" style="flex: 1;">
+                        <span id="tm-panel-width-val" class="tm-val-label">340px</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                        <span style="font-size: 11px; width: 60px; color:#8b949e;">Opaklık</span>
+                        <input type="range" class="tm-slider" id="tm-panel-opacity-slider" min="50" max="100" value="96" step="1" style="flex: 1;">
+                        <span id="tm-panel-opacity-val" class="tm-val-label">%96</span>
+                    </div>
+                </div>
+
+                <div class="tm-menu-section" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #30363d;">
+                    <div class="tm-menu-btn-action" id="tm-toggle-visibility-btn">👁️ Zarı Gizle</div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                        <span style="font-size: 11px; color:#8b949e; width: 60px;">Kısayol Tuşu</span>
+                        <div class="tm-select" id="tm-hotkey-display" style="flex: 1; text-align: center; cursor: pointer;">Alt+Shift+D</div>
+                    </div>
+                </div>
+
+                <div class="tm-menu-section" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #30363d;">
+                    <div class="tm-menu-btn-action" id="tm-save-btn">💾 Profil Olarak Kaydet</div>
+                    <div id="tm-presets-list"></div>
+                </div>
+            </div>
+
         </div>
 
         <div id="tm-custom-dialog">
@@ -616,52 +602,22 @@ window.BG3DiceAssets = (function() {
         `;
     }
 
-    function getSkullSVG() {
-        return `<div class="tm-skull-icon"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path class="skull-fill" d="M 50,15 C 20,15 15,35 15,55 C 15,70 25,75 30,85 L 70,85 C 75,75 85,70 85,55 C 85,35 80,15 50,15 Z"/>
-            <polygon class="skull-dark" points="25,45 45,55 35,68"/>
-            <polygon class="skull-dark" points="75,45 55,55 65,68"/>
-            <polygon class="skull-dark" points="50,65 46,75 54,75"/>
-            <path fill="rgba(0,0,0,0.85)" d="M 50,75 C 30,75 5,90 10,105 C 20,95 30,90 40,88 C 45,87 55,87 60,88 C 70,90 80,95 90,105 C 95,90 70,75 50,75 Z"/>
-        </svg></div>`;
-    }
-
-    function getHornedSkullSVG() {
-        return `<div class="tm-skull-icon horned-skull"><svg viewBox="-30 -20 160 150" xmlns="http://www.w3.org/2000/svg">
-            <path class="skull-fill" d="M 18,30 C -15,0 -35,30 -10,48 C -5,35 15,25 30,35 Z"/>
-            <path class="skull-fill" d="M 82,30 C 115,0 135,30 110,48 C 105,35 85,25 70,35 Z"/>
-            <path class="skull-fill" d="M 50,10 C 15,10 5,40 10,65 C 15,80 25,85 30,100 L 70,100 C 75,85 85,80 90,65 C 95,40 85,10 50,10 Z"/>
-            <path fill="rgba(0,0,0,0.3)" d="M 10,50 C 25,45 40,50 50,55 C 60,50 75,45 90,50 C 85,65 75,70 70,65 C 60,60 40,60 30,65 C 25,70 15,65 10,50 Z"/>
-            <polygon class="skull-dark" points="20,45 45,55 35,68"/>
-            <polygon class="skull-dark" points="80,45 55,55 65,68"/>
-            <polygon class="skull-dark" points="50,65 44,78 56,78"/>
-            <path fill="rgba(0,0,0,0.9)" d="M 50,80 C 20,80 -10,100 -15,125 C 5,105 25,100 40,95 C 45,93 55,93 60,95 C 75,100 95,105 115,125 C 110,100 80,80 50,80 Z"/>
-        </svg></div>`;
-    }
+    function getSkullSVG() { return `<div class="tm-skull-icon"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path class="skull-fill" d="M 50,15 C 20,15 15,35 15,55 C 15,70 25,75 30,85 L 70,85 C 75,75 85,70 85,55 C 85,35 80,15 50,15 Z"/><polygon class="skull-dark" points="25,45 45,55 35,68"/><polygon class="skull-dark" points="75,45 55,55 65,68"/><polygon class="skull-dark" points="50,65 46,75 54,75"/><path fill="rgba(0,0,0,0.85)" d="M 50,75 C 30,75 5,90 10,105 C 20,95 30,90 40,88 C 45,87 55,87 60,88 C 70,90 80,95 90,105 C 95,90 70,75 50,75 Z"/></svg></div>`; }
+    function getHornedSkullSVG() { return `<div class="tm-skull-icon horned-skull"><svg viewBox="-30 -20 160 150" xmlns="http://www.w3.org/2000/svg"><path class="skull-fill" d="M 18,30 C -15,0 -35,30 -10,48 C -5,35 15,25 30,35 Z"/><path class="skull-fill" d="M 82,30 C 115,0 135,30 110,48 C 105,35 85,25 70,35 Z"/><path class="skull-fill" d="M 50,10 C 15,10 5,40 10,65 C 15,80 25,85 30,100 L 70,100 C 75,85 85,80 90,65 C 95,40 85,10 50,10 Z"/><path fill="rgba(0,0,0,0.3)" d="M 10,50 C 25,45 40,50 50,55 C 60,50 75,45 90,50 C 85,65 75,70 70,65 C 60,60 40,60 30,65 C 25,70 15,65 10,50 Z"/><polygon class="skull-dark" points="20,45 45,55 35,68"/><polygon class="skull-dark" points="80,45 55,55 65,68"/><polygon class="skull-dark" points="50,65 44,78 56,78"/><path fill="rgba(0,0,0,0.9)" d="M 50,80 C 20,80 -10,100 -15,125 C 5,105 25,100 40,95 C 45,93 55,93 60,95 C 75,100 95,105 115,125 C 110,100 80,80 50,80 Z"/></svg></div>`; }
 
     function getCornerPlateSVG(dir) {
-        let points = "";
-        let edge = "";
+        let points = ""; let edge = "";
         if (dir === 'tl') { points = "0,0 75,0 0,75"; edge = '<line x1="75" y1="0" x2="0" y2="75" class="plate-edge"/>'; }
         else if (dir === 'tr') { points = "25,0 100,0 100,75"; edge = '<line x1="25" y1="0" x2="100" y2="75" class="plate-edge"/>'; }
         else if (dir === 'bl') { points = "0,25 75,100 0,100"; edge = '<line x1="0" y1="25" x2="75" y2="100" class="plate-edge"/>'; }
         else if (dir === 'br') { points = "25,100 100,25 100,100"; edge = '<line x1="25" y1="100" x2="100" y2="25" class="plate-edge"/>'; }
-
-        return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%; height:100%; display:block; overflow:visible;" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="${points}" class="plate-fill"/>
-            ${edge}
-        </svg>`;
+        return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%; height:100%; display:block; overflow:visible;" xmlns="http://www.w3.org/2000/svg"><polygon points="${points}" class="plate-fill"/>${edge}</svg>`;
     }
 
-    function seededRandom(seed) {
-        let x = Math.sin(seed) * 10000;
-        return x - Math.floor(x);
-    }
+    function seededRandom(seed) { let x = Math.sin(seed) * 10000; return x - Math.floor(x); }
 
     function getJaggedHolePath(cx, cy, r, seed) {
-        const coreCount = 11;
-        const armCount = 4;
-        const corePoints = [];
+        const coreCount = 11; const armCount = 4; const corePoints = [];
         for (let k = 0; k < coreCount; k++) {
             const angle = (k / coreCount) * Math.PI * 2 + seededRandom(seed + 500) * 0.5;
             const jitter = 0.82 + seededRandom(seed + k * 12.9898) * 0.32;
@@ -670,8 +626,7 @@ window.BG3DiceAssets = (function() {
         }
         let d = `M ${corePoints[0][0]} ${corePoints[0][1]} `;
         for (let k = 0; k < coreCount; k++) {
-            const curr = corePoints[k];
-            const next = corePoints[(k + 1) % coreCount];
+            const curr = corePoints[k]; const next = corePoints[(k + 1) % coreCount];
             const shouldHaveArm = seededRandom(seed + k * 7.77) < (armCount / coreCount);
             if (shouldHaveArm) {
                 const armAngle = curr[2] + (seededRandom(seed + k * 3.33) - 0.5) * 0.3;
@@ -697,16 +652,14 @@ window.BG3DiceAssets = (function() {
             }
             d += `L ${next[0]} ${next[1]} `;
         }
-        d += 'Z';
-        return d;
+        d += 'Z'; return d;
     }
 
     function getCompactPipsHTML(value) {
         const count = Math.max(1, Math.min(20, parseInt(value, 10) || 1));
         let html = '<div class="tm-compact-pips">';
         for(let i = 0; i < count; i++) { html += '<span class="tm-compact-pip"></span>'; }
-        html += '</div>';
-        return html;
+        html += '</div>'; return html;
     }
 
     return {
